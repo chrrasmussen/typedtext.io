@@ -7,7 +7,8 @@ defmodule Typedtext.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      idris_ipkg: "typedtext.ipkg",
+      compilers: [:idris, :phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -40,7 +41,8 @@ defmodule Typedtext.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:mix_idris2, path: "../mix_idris_umbrella/apps/mix_idris2"}
     ]
   end
 

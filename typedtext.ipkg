@@ -1,0 +1,9 @@
+package typedtext
+
+modules =
+  Hello
+
+sourcedir = "lib/idris"
+builddir = "_build/idris"
+
+library = typedtext
