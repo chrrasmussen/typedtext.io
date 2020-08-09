@@ -1,4 +1,4 @@
-# Typedtext
+# typedtext.io
 
 To start your Phoenix server:
 
