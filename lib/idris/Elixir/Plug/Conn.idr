@@ -88,7 +88,7 @@ getReqQueryParam key decoder conn = do
 
 export
 getReqHeader : (key : String) -> Conn -> List String
-getReqHeader key conn = unsafePerformIO $ do
+getReqHeader key conn =
   erlUnsafeCall (List String) "Elixir.Plug.Conn" "get_req_header" [conn, key]
 
 
