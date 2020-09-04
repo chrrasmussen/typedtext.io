@@ -7,4 +7,6 @@ modules =
 sourcedir = "lib/idris"
 builddir = "_build/idris"
 
+depends = contrib
+
 library = typedtext
