@@ -17,7 +17,6 @@ Conn =
     , MkAtom "query_params" := ErlAnyMap
     , MkAtom "req_headers" := List (ErlTuple2 String String)
     ]
-    
 
 public export
 data Scheme = Http | Https | OtherScheme String
@@ -97,6 +96,7 @@ getReqHeader key conn =
 export
 putRespHeader : (key : String) -> (value : String) -> Conn -> Maybe Conn
 putRespHeader key value conn = unsafePerformIO $ do
+  -- Fails if response is already sent
   Right conn <- erlCall "Elixir.Plug.Conn" "put_resp_header" [conn, key, value]
     | Left _ => pure Nothing
   pure $ Just (erlUnsafeCast Conn conn)
@@ -104,6 +104,7 @@ putRespHeader key value conn = unsafePerformIO $ do
 export
 sendResp : Int -> String -> Conn -> IO (Maybe Conn)
 sendResp status content conn = do
+  -- Fails if response is already sent
   Right conn <- erlCall "Elixir.Plug.Conn" "send_resp" [conn, status, content]
     | Left _ => pure Nothing
   pure $ Just (erlUnsafeCast Conn conn)
