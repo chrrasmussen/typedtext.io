@@ -2,7 +2,6 @@ module Elixir.Router
 
 import Data.List
 import Erlang
-import Erlang.Debug -- TODO: Remove
 import Elixir.Plug
 
 %default total
