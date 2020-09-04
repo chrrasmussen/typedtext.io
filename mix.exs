@@ -8,6 +8,7 @@ defmodule Typedtext.MixProject do
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       idris_ipkg: "typedtext.ipkg",
+      idris_options: [incremental: true, debug: true],
       compilers: [:idris, :phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
