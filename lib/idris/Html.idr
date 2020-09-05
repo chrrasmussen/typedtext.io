@@ -1,8 +1,10 @@
 module Html
 
+import Language.Reflection
 import Utils.String
 
 %default total
+%language ElabReflection
 
 
 export
@@ -24,15 +26,24 @@ raw : String -> Html
 raw = Raw
 
 
--- CONCRETE ELEMENTS
+-- CONCRETE TAGS
 
-export
-div : List (String, String) -> List Html -> Html
-div = el "div"
+generateTags : List String -> Elab ()
+generateTags tags =
+  declare (tags >>= tagToDecls)
+  where
+    tagToDecls : String -> List Decl
+    tagToDecls tag =
+      [ IClaim EmptyFC MW Export [] (MkTy EmptyFC (UN tag) `(List (String, String) -> List Html -> Html))
+      , IDef EmptyFC (UN tag)
+          [ PatClause EmptyFC
+              (IVar EmptyFC (UN tag))
+              `(El ~(IPrimVal EmptyFC (Str tag)))
+          ]
+      ]
 
-export
-h1 : List (String, String) -> List Html -> Html
-h1 = el "h1"
+
+%runElab generateTags ["div", "h1"]
 
 
 -- RENDER
