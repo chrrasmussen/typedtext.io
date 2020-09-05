@@ -1,6 +1,6 @@
 <!--
 AUTHOR: Christian Rasmussen <christian.rasmussen@me.com>
-PUBLISH_DATE: 2020-08-07
+PUBLISH_DATE: 2020-09-06
 TAGS: meta, first, non-technical
 -->
 
@@ -8,9 +8,7 @@ TAGS: meta, first, non-technical
 
 Welcome to my blog!
 
-<!-- FOLD -->
+Example code snippet:
 
 > foo : Int
 > foo = 40 + 2
-
-Evaluating `foo` results in the value `<!-- EVAL: foo -->`.
