@@ -1,4 +1,4 @@
-module Typedtext.Pages.ShowPost
+module Typedtext.Pages.ShowArticle
 
 import Html
 

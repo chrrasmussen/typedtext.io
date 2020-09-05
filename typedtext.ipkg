@@ -2,7 +2,7 @@ package typedtext
 
 modules =
   Typedtext.Router,
-  Typedtext.Posts.P001_HelloWorld
+  Typedtext.Articles.A001_HelloWorld
 
 sourcedir = "lib/idris"
 builddir = "_build/idris"

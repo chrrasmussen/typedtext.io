@@ -5,8 +5,8 @@ import Elixir.Markdown
 import Elixir.Plug.Conn
 import Html
 import Typedtext.Pages.Layout
-import Typedtext.Pages.ListPosts
-import Typedtext.Pages.ShowPost
+import Typedtext.Pages.ListArticles
+import Typedtext.Pages.ShowArticle
 
 
 %default total
@@ -15,7 +15,7 @@ import Typedtext.Pages.ShowPost
 export
 index : Conn -> IO Conn
 index conn = do
-  let html = Layout.view ListPosts.view
+  let html = Layout.view ListArticles.view
   let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
     | Nothing => pure conn
   Just conn <- sendResp 200 (render html) conn
@@ -23,9 +23,9 @@ index conn = do
   pure conn
 
 export
-viewPost : Conn -> IO Conn
-viewPost conn = do
-  let html = Layout.view ShowPost.view
+viewArticle : Conn -> IO Conn
+viewArticle conn = do
+  let html = Layout.view ShowArticle.view
   let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
     | Nothing => pure conn
   Just conn <- sendResp 200 (render html) conn
