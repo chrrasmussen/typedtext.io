@@ -23,8 +23,8 @@ text : String -> Html
 text = Text
 
 export
-raw : String -> Html
-raw = Raw
+unsafeRaw : String -> Html
+unsafeRaw = Raw
 
 
 -- CONCRETE TAGS
@@ -45,8 +45,10 @@ generateTags tags =
 
 
 %runElab generateTags
-  [ -- Headers
-    "h1", "h2", "h3", "h4", "h5", "h6"
+  [ -- Document
+    "html", "head", "body", "title", "script", "style", "link", "meta", "base"
+    -- Headers
+  , "h1", "h2", "h3", "h4", "h5", "h6"
     -- Grouping content
   , "div", "p", "hr", "pre", "blockquote"
     -- Text
@@ -57,14 +59,13 @@ generateTags tags =
   , "img", "iframe", "canvas", "math"
     -- Inputs
   , "form", "input", "textarea", "button", "select", "option"
+  , "fieldset", "legend", "label", "datalist", "optgroup", "output", "progress", "meter"
     -- Sections
   , "section", "nav", "article", "aside", "header", "footer", "address", "main"
     -- Figures
   , "figure", "figcaption"
     -- Tables
   , "table", "caption", "colgroup", "col", "tbody", "thead", "tfoot", "tr", "td", "th"
-    -- Less common elements
-  , "fieldset", "legend", "label", "datalist", "optgroup", "output", "progress", "meter"
     -- Audio and video
   , "audio", "video", "source", "track"
     -- Embedded objects
@@ -82,6 +83,7 @@ generateTags tags =
 
 -- RENDER
 
+-- TODO: Add escaping
 export
 render : Html -> String
 render (El tag attrs children) = "<" ++ showSep " " (tag :: renderAttributes attrs) ++ ">" ++ concat (assert_total (map render children)) ++ "</" ++ tag ++ ">"

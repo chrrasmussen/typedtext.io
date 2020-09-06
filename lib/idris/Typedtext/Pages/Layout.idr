@@ -8,9 +8,20 @@ import Html
 export
 view : Html -> Html
 view content =
-  div
-    [ style "background-color" "gray"
-    ]
-    [ h1 [] [text "typedtext.io"]
-    , content
+  html
+    []
+    [ head
+        []
+        [ title [] [ text "typedtext.io" ]
+        ]
+    , body
+        []
+        [
+          div
+            [ style "background-color" "gray"
+            ]
+            [ h1 [] [ text "typedtext.io" ]
+            , content
+            ]
+        ]
     ]

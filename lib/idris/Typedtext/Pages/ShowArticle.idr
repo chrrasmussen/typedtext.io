@@ -16,5 +16,5 @@ view article =
     div
       []
       [ h1 [] [text article.title]
-      , raw $ htmlString
+      , unsafeRaw $ htmlString
       ]
