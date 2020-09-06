@@ -9,7 +9,7 @@ export
 view : Html -> Html
 view content =
   div
-    [ ("style", "background-color: gray")
+    [ style "background-color" "gray"
     ]
     [ h1 [] [text "typedtext.io"]
     , content
