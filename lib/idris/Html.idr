@@ -43,7 +43,40 @@ generateTags tags =
       ]
 
 
-%runElab generateTags ["div", "h1"]
+%runElab generateTags
+  [ -- Headers
+    "h1", "h2", "h3", "h4", "h5", "h6"
+    -- Grouping content
+  , "div", "p", "hr", "pre", "blockquote"
+    -- Text
+  , "span", "a", "code", "em", "strong", "i", "b", "u", "sub", "sup", "br"
+    -- Lists
+  , "ol", "ul", "li", "dl", "dt", "dd"
+    -- Embedded content
+  , "img", "iframe", "canvas", "math"
+    -- Inputs
+  , "form", "input", "textarea", "button", "select", "option"
+    -- Sections
+  , "section", "nav", "article", "aside", "header", "footer", "address", "main"
+    -- Figures
+  , "figure", "figcaption"
+    -- Tables
+  , "table", "caption", "colgroup", "col", "tbody", "thead", "tfoot", "tr", "td", "th"
+    -- Less common elements
+  , "fieldset", "legend", "label", "datalist", "optgroup", "output", "progress", "meter"
+    -- Audio and video
+  , "audio", "video", "source", "track"
+    -- Embedded objects
+  , "embed", "object", "param"
+    -- Text edits
+  , "ins", "del"
+    -- Semantic text
+  , "small", "cite", "dfn", "abbr", "time", "var", "samp", "kbd", "s", "q"
+    -- Less common text tags
+  , "mark", "ruby", "rt", "rp", "bdi", "bdo", "wbr"
+    -- Interactive elements
+  , "details", "summary", "menuitem", "menu"
+  ]
 
 
 -- RENDER
