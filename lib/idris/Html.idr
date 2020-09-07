@@ -1,7 +1,6 @@
 module Html
 
 import Language.Reflection
-import Utils.String
 import public Html.Attributes
 
 %default total
