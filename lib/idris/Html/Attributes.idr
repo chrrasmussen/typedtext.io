@@ -71,25 +71,51 @@ generateAttrs attrs =
           ]
       ]
 
-%runElab generateAttrs $
-  map (\n => (n, AString))
-      [ "id", "title", "type", "value", "placeholder", "accept", "action"
-      , "enctype", "list", "method", "name", "pattern", "for", "form", "max"
-      , "min", "step", "wrap", "href", "target", "download", "hreflang"
-      , "media", "ping", "rel", "usemap", "shape", "coords", "src", "alt"
-      , "preload", "poster", "kind", "srclang", "sandbox", "srcdoc", "align"
-      , "headers", "scope", "contextmenu", "dir", "draggable", "dropzone"
-      , "itemprop", "lang", "cite", "datetime", "pubdate", "manifest"
-      ] ++
-    map (\n => (n, ABool))
-      [ "hidden", "checked", "selected", "autofocus", "disabled", "multiple"
-      , "novalidate", "readonly", "required", "ismap", "autoplay", "controls"
-      , "loop", "default", "reversed", "contenteditable", "spellcheck"
-      ] ++
-    map (\n => (n, AInteger))
-      [ "maxlength", "minlength", "size", "cols", "rows", "width", "height"
-      , "start", "colspan", "rowspan", "tabindex"
-      ]
+%runElab generateAttrs
+  [ -- Common
+    ("id", AString), ("title", AString), ("hidden", ABool)
+    -- Inputs
+  , ("type", AString), ("value", AString), ("checked", ABool)
+  , ("placeholder", AString), ("selected", ABool)
+    -- Input helpers
+  , ("accept", AString), ("action", AString), ("autofocus", ABool)
+  , ("disabled", ABool), ("enctype", AString), ("list", AString)
+  , ("maxlength", AInteger), ("minlength", AInteger), ("method", AString)
+  , ("multiple", ABool), ("name", AString), ("novalidate", ABool)
+  , ("pattern", AString), ("readonly", ABool), ("required", ABool)
+  , ("size", AInteger), ("for", AString), ("form", AString)
+  , ("max", AString), ("min", AString), ("step", AString)
+  -- Input text areas
+  , ("cols", AInteger), ("rows", AInteger), ("wrap", AString)
+    -- Links and areas
+  , ("href", AString), ("target", AString), ("download", AString)
+  , ("hreflang", AString), ("media", AString), ("ping", AString)
+  , ("rel", AString)
+    -- Maps
+  , ("ismap", ABool), ("usemap", AString), ("shape", AString)
+  , ("coords", AString)
+    -- Embedded content
+  , ("src", AString), ("width", AInteger), ("height", AInteger)
+  , ("alt", AString)
+    -- Audio and video
+  , ("autoplay", ABool), ("controls", ABool), ("loop", ABool)
+  , ("preload", AString), ("poster", AString), ("default", ABool)
+  , ("kind", AString), ("srclang", AString)
+    -- Iframes
+  , ("sandbox", AString), ("srcdoc", AString)
+    -- Ordered lists
+  , ("reversed", ABool), ("start", AInteger)
+    -- Tables
+  , ("align", AString), ("colspan", AInteger), ("rowspan", AInteger)
+  , ("headers", AString), ("scope", AString)
+    -- Less common global attributes
+  , ("contenteditable", ABool), ("contextmenu", AString), ("dir", AString)
+  , ("draggable", AString), ("dropzone", AString), ("itemprop", AString)
+  , ("lang", AString), ("spellcheck", ABool), ("tabindex", AInteger)
+    -- Miscellaneous
+  , ("cite", AString), ("datetime", AString), ("pubdate", AString)
+  , ("manifest", AString)
+  ]
 
 export %inline
 acceptCharset : String -> Attribute
