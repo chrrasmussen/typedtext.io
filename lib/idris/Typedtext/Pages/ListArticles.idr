@@ -6,9 +6,25 @@ import Typedtext.Article
 %default total
 
 
+viewArticle : Article -> Html
+viewArticle article =
+  li
+    []
+    [ a
+        [ attr "href" "#" ]
+        [ text article.title ]
+    , span
+        [ style "float" "right" ]
+        [ text article.publishDate ]
+    ]
+
 export
 view : List Article -> Html
 view articles =
   div
     []
-    ([ h1 [] [text "Posts"] ] ++ map (\p => div [] [text p.title]) articles)
+    [ h2 [] [text "Posts"]
+    , ol
+        []
+        (map viewArticle articles)
+    ]
