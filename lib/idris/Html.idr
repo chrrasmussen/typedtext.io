@@ -13,15 +13,15 @@ data Html : Type where
   Text : String -> Html
   Raw : String -> Html
 
-export
+export %inline
 el : (tag : String) -> List Attribute -> List Html -> Html
 el = El
 
-export
+export %inline
 text : String -> Html
 text = Text
 
-export
+export %inline
 unsafeRaw : String -> Html
 unsafeRaw = Raw
 
@@ -34,7 +34,7 @@ generateTags tags =
   where
     tagToDecls : String -> List Decl
     tagToDecls tag =
-      [ IClaim EmptyFC MW Export [] (MkTy EmptyFC (UN tag) `(List Attribute -> List Html -> Html))
+      [ IClaim EmptyFC MW Export [Inline] (MkTy EmptyFC (UN tag) `(List Attribute -> List Html -> Html))
       , IDef EmptyFC (UN tag)
           [ PatClause EmptyFC
               (IVar EmptyFC (UN tag))

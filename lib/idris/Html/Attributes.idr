@@ -32,11 +32,11 @@ export %inline
 style : (key : String) -> (value : String) -> Attribute
 style = Style
 
-export
+export %inline
 className : (name : String) -> Attribute
 className name = Classes [name]
 
-export
+export %inline
 classList : List (String, Bool) -> Attribute
 classList classMapping =
   Classes (mapMaybe (\(name, include) => toMaybe include name) classMapping)
@@ -63,7 +63,7 @@ generateAttrs attrs =
   where
     attrToDecls : (String, AttributeType) -> List Decl
     attrToDecls (attr, ty) =
-      [ IClaim EmptyFC MW Export [] (MkTy EmptyFC (UN attr) (attrFnType (attrType ty)))
+      [ IClaim EmptyFC MW Export [Inline] (MkTy EmptyFC (UN attr) (attrFnType (attrType ty)))
       , IDef EmptyFC (UN attr)
           [ PatClause EmptyFC
               (IVar EmptyFC (UN attr))
