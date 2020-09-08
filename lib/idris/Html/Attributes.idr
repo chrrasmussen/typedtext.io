@@ -42,20 +42,20 @@ classList classMapping =
   Classes (mapMaybe (\(name, include) => toMaybe include name) classMapping)
 
 
-data AttributeType = AString | ABool | AInteger
+data AttributeType = AStr | ABool | AInt
 
 attrType : AttributeType -> TTImp
-attrType AString = IPrimVal EmptyFC StringType
+attrType AStr = IPrimVal EmptyFC StringType
 attrType ABool = IVar EmptyFC (NS (MkNS ["Prelude"]) (UN "Bool"))
-attrType AInteger = IPrimVal EmptyFC IntegerType
+attrType AInt = IPrimVal EmptyFC IntegerType
 
 attrFnType : TTImp -> TTImp
 attrFnType inp = IPi EmptyFC MW ExplicitArg Nothing inp (IVar EmptyFC (UN "Attribute"))
 
 callAttrFn : (ty : AttributeType) -> TTImp
-callAttrFn AString = IVar EmptyFC (UN "Attr")
+callAttrFn AStr = IVar EmptyFC (UN "Attr")
 callAttrFn ABool = IVar EmptyFC (UN "boolAttr")
-callAttrFn AInteger = IVar EmptyFC (UN "integerAttr")
+callAttrFn AInt = IVar EmptyFC (UN "integerAttr")
 
 generateAttrs : List (String, AttributeType) -> Elab ()
 generateAttrs attrs =
@@ -73,48 +73,48 @@ generateAttrs attrs =
 
 %runElab generateAttrs
   [ -- Common
-    ("id", AString), ("title", AString), ("hidden", ABool)
+    ("id", AStr), ("title", AStr), ("hidden", ABool)
     -- Inputs
-  , ("type", AString), ("value", AString), ("checked", ABool)
-  , ("placeholder", AString), ("selected", ABool)
+  , ("type", AStr), ("value", AStr), ("checked", ABool)
+  , ("placeholder", AStr), ("selected", ABool)
     -- Input helpers
-  , ("accept", AString), ("action", AString), ("autofocus", ABool)
-  , ("disabled", ABool), ("enctype", AString), ("list", AString)
-  , ("maxlength", AInteger), ("minlength", AInteger), ("method", AString)
-  , ("multiple", ABool), ("name", AString), ("novalidate", ABool)
-  , ("pattern", AString), ("readonly", ABool), ("required", ABool)
-  , ("size", AInteger), ("for", AString), ("form", AString)
-  , ("max", AString), ("min", AString), ("step", AString)
+  , ("accept", AStr), ("action", AStr), ("autofocus", ABool)
+  , ("disabled", ABool), ("enctype", AStr), ("list", AStr)
+  , ("maxlength", AInt), ("minlength", AInt), ("method", AStr)
+  , ("multiple", ABool), ("name", AStr), ("novalidate", ABool)
+  , ("pattern", AStr), ("readonly", ABool), ("required", ABool)
+  , ("size", AInt), ("for", AStr), ("form", AStr)
+  , ("max", AStr), ("min", AStr), ("step", AStr)
   -- Input text areas
-  , ("cols", AInteger), ("rows", AInteger), ("wrap", AString)
+  , ("cols", AInt), ("rows", AInt), ("wrap", AStr)
     -- Links and areas
-  , ("href", AString), ("target", AString), ("download", AString)
-  , ("hreflang", AString), ("media", AString), ("ping", AString)
-  , ("rel", AString)
+  , ("href", AStr), ("target", AStr), ("download", AStr)
+  , ("hreflang", AStr), ("media", AStr), ("ping", AStr)
+  , ("rel", AStr)
     -- Maps
-  , ("ismap", ABool), ("usemap", AString), ("shape", AString)
-  , ("coords", AString)
+  , ("ismap", ABool), ("usemap", AStr), ("shape", AStr)
+  , ("coords", AStr)
     -- Embedded content
-  , ("src", AString), ("width", AInteger), ("height", AInteger)
-  , ("alt", AString)
+  , ("src", AStr), ("width", AInt), ("height", AInt)
+  , ("alt", AStr)
     -- Audio and video
   , ("autoplay", ABool), ("controls", ABool), ("loop", ABool)
-  , ("preload", AString), ("poster", AString), ("default", ABool)
-  , ("kind", AString), ("srclang", AString)
+  , ("preload", AStr), ("poster", AStr), ("default", ABool)
+  , ("kind", AStr), ("srclang", AStr)
     -- Iframes
-  , ("sandbox", AString), ("srcdoc", AString)
+  , ("sandbox", AStr), ("srcdoc", AStr)
     -- Ordered lists
-  , ("reversed", ABool), ("start", AInteger)
+  , ("reversed", ABool), ("start", AInt)
     -- Tables
-  , ("align", AString), ("colspan", AInteger), ("rowspan", AInteger)
-  , ("headers", AString), ("scope", AString)
+  , ("align", AStr), ("colspan", AInt), ("rowspan", AInt)
+  , ("headers", AStr), ("scope", AStr)
     -- Less common global attributes
-  , ("contenteditable", ABool), ("contextmenu", AString), ("dir", AString)
-  , ("draggable", AString), ("dropzone", AString), ("itemprop", AString)
-  , ("lang", AString), ("spellcheck", ABool), ("tabindex", AInteger)
+  , ("contenteditable", ABool), ("contextmenu", AStr), ("dir", AStr)
+  , ("draggable", AStr), ("dropzone", AStr), ("itemprop", AStr)
+  , ("lang", AStr), ("spellcheck", ABool), ("tabindex", AInt)
     -- Miscellaneous
-  , ("cite", AString), ("datetime", AString), ("pubdate", AString)
-  , ("manifest", AString)
+  , ("cite", AStr), ("datetime", AStr), ("pubdate", AStr)
+  , ("manifest", AStr)
   ]
 
 export %inline
