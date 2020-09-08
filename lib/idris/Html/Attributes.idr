@@ -63,6 +63,10 @@ renderAttributes : List Attribute -> List String
 renderAttributes attrs =
   let classes = concat (getClasses attrs)
       styles = getStyles attrs
-      classesAttr = Attr "class" (unwords classes)
-      styleAttr = Attr "style" (showSep ";" (map showStyle styles))
-  in (classesAttr :: styleAttr :: attrs) >>= renderAttr
+      classesAttr = case classes of
+        [] => []
+        _ :: _ => [Attr "class" (unwords classes)]
+      styleAttr = case styles of
+        [] => []
+        _ :: _ => [Attr "style" (showSep ";" (map showStyle styles))]
+  in (classesAttr ++ styleAttr ++ attrs) >>= renderAttr
