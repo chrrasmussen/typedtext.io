@@ -44,7 +44,8 @@ defmodule Typedtext.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:earmark, "~> 1.4.10"},
-      {:mix_idris2, path: "../mix_idris_umbrella/apps/mix_idris2"}
+      {:mix_idris2, git: "https://github.com/chrrasmussen/mix_idris2"},
+      {:idris2, git: "https://github.com/chrrasmussen/Idris2-Erlang", branch: "v0.2.1-alpha.1"}
     ]
   end
 
