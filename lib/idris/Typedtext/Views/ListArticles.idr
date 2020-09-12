@@ -1,4 +1,4 @@
-module Typedtext.Pages.ListArticles
+module Typedtext.Views.ListArticles
 
 import Html
 import Typedtext.Article

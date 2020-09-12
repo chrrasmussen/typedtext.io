@@ -1,4 +1,4 @@
-module Typedtext.Pages.ShowArticle
+module Typedtext.Views.ShowArticle
 
 import Html
 import Elixir.Markdown

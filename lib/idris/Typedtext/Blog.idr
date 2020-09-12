@@ -10,9 +10,9 @@ import Elixir.Markdown
 import Elixir.Plug.Conn
 import Html
 import Typedtext.Article
-import Typedtext.Pages.Layout
-import Typedtext.Pages.ListArticles
-import Typedtext.Pages.ShowArticle
+import Typedtext.Views.Layout
+import Typedtext.Views.ListArticles
+import Typedtext.Views.ShowArticle
 
 
 %default total

@@ -1,4 +1,4 @@
-module Typedtext.Pages.Layout
+module Typedtext.Views.Layout
 
 import Html
 
