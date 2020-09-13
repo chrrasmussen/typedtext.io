@@ -22,7 +22,6 @@ defmodule TypedtextWeb do
       use Phoenix.Controller, namespace: TypedtextWeb
 
       import Plug.Conn
-      import TypedtextWeb.Gettext
       alias TypedtextWeb.Router.Helpers, as: Routes
     end
   end
@@ -54,7 +53,6 @@ defmodule TypedtextWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import TypedtextWeb.Gettext
     end
   end
 
@@ -67,7 +65,6 @@ defmodule TypedtextWeb do
       import Phoenix.View
 
       import TypedtextWeb.ErrorHelpers
-      import TypedtextWeb.Gettext
       alias TypedtextWeb.Router.Helpers, as: Routes
     end
   end

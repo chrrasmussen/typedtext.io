@@ -9,7 +9,7 @@ defmodule Typedtext.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       idris_ipkg: "typedtext.ipkg",
       idris_options: [incremental: true, debug: true],
-      compilers: [:idris, :phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:idris, :phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -40,7 +40,6 @@ defmodule Typedtext.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:earmark, "~> 1.4.10"},

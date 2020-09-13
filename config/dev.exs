@@ -42,7 +42,6 @@ config :typedtext, TypedtextWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"priv/gettext/.*(po)$",
       ~r"lib/typedtext_web/(live|views)/.*(ex)$",
       ~r"lib/typedtext_web/templates/.*(eex)$"
     ]
@@ -59,4 +58,4 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :typedtext, TypedtextWeb.Endpoint,
-  reloadable_compilers: [:idris, :erlang, :gettext, :phoenix, :elixir]
+  reloadable_compilers: [:idris, :erlang, :phoenix, :elixir]
