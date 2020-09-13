@@ -181,6 +181,13 @@ view selectedPage content =
             , rel "stylesheet"
             ]
             []
+        , script
+            [ boolAttr "async" True
+            , boolAttr "defer" True
+            , attr "data-domain" "typedtext.io"
+            , src "https://plausible.io/js/plausible.js"
+            ]
+            []
     , body
         [ style "margin" "0"
         , style "font-family" "-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
