@@ -53,7 +53,7 @@ viewPosts conn = do
       sendResp' 500 (render html) conn
   articles <- traverse (getArticle . (postsDir </>)) files
   let articles' = mapMaybe id (reverse articles)
-  let html = Layout.view (ListArticles.view articles')
+  let html = Layout.view Posts (ListArticles.view articles')
   let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
     | Nothing => pure conn
   sendResp' 200 (render html) conn
@@ -65,7 +65,7 @@ viewArticle conn = do
     | Nothing => do
       let html = text "Failed to read file"
       sendResp' 500 (render html) conn
-  let html = Layout.view (ShowArticle.view post)
+  let html = Layout.view Posts (ShowArticle.view post)
   let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
     | Nothing => pure conn
   sendResp' 200 (render html) conn
@@ -73,7 +73,7 @@ viewArticle conn = do
 export
 viewAbout : Conn -> IO Conn
 viewAbout conn = do
-  let html = Layout.view About.view
+  let html = Layout.view About About.view
   let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
     | Nothing => pure conn
   sendResp' 200 (render html) conn

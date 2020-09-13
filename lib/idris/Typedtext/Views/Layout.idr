@@ -23,8 +23,20 @@ footerTextColor : String
 footerTextColor = "#888888"
 
 
-
 -- VIEW
+
+public export
+data SelectedPage
+  = Posts
+  | Tags
+  | About
+
+export
+Eq SelectedPage where
+  Posts == Posts = True
+  Tags == Tags = True
+  About == About = True
+  _ == _ = False
 
 menuButton : (isActive : Bool) -> (url : String) -> (title : String) -> Html
 menuButton isActive url title =
@@ -46,8 +58,8 @@ menuButton isActive url title =
         [ text title ]
     ]
 
-header : Html
-header =
+header : SelectedPage -> Html
+header selectedPage =
   div
     [ className "header"
     , style "background-color" headerBackgroundColor
@@ -79,9 +91,9 @@ header =
             ]
         , div
             [ style "background-color" "green" ]
-            [ menuButton True "/posts" "Posts"
-            , menuButton False "/tags" "Tags"
-            , menuButton False "/about" "About"
+            [ menuButton (selectedPage == Posts) "/posts" "Posts"
+            , menuButton (selectedPage == Tags) "/tags" "Tags"
+            , menuButton (selectedPage == About) "/about" "About"
             ]
         ]
     ]
@@ -138,8 +150,8 @@ footer =
 
 
 export
-view : Html -> Html
-view content =
+view : SelectedPage -> Html -> Html
+view selectedPage content =
   let pagePadding = 15
   in html
     [ style "background-color" "#EEEEEE"
@@ -159,7 +171,7 @@ view content =
         , style "font-size" "16px"
         , style "line-height" "1.2em"
         ]
-        [ header
+        [ header selectedPage
         , div
             [ style "width" (cast (contentWidth + pagePadding * 2) ++ "px")
             , style "margin" "30px auto 0 auto"
