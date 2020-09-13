@@ -21,8 +21,8 @@ import Typedtext.Views.About
 postsDir : String
 postsDir = "lib/idris/Typedtext/Articles"
 
-getArticle : (path : String) -> IO (Maybe Article)
-getArticle path = do
+readArticle : (path : String) -> IO (Maybe Article)
+readArticle path = do
   Right contents <- readFile path
     | Left _ => pure Nothing
   let Right post = parseArticle contents
@@ -51,17 +51,24 @@ viewPosts conn = do
     | Left _ => do
       let html = text "Failed to read directory"
       sendResp' 500 (render html) conn
-  articles <- traverse (getArticle . (postsDir </>)) files
-  let articles' = mapMaybe id (reverse articles)
+  articles <- traverse getArticle files
+  let articles' = reverse (mapMaybe id articles)
   let html = Layout.view Posts (ListArticles.view articles')
   let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
     | Nothing => pure conn
   sendResp' 200 (render html) conn
+  where
+    getArticle : (file : String) -> IO (Maybe (String, Article))
+    getArticle file = do
+      let path = postsDir </> file
+      Just article <- readArticle path
+        | Nothing => pure Nothing
+      pure $ Just (file, article)
 
 export
 viewArticle : Conn -> IO Conn
 viewArticle conn = do
-  Just post <- getArticle (postsDir </> "A001_HelloWorld.lidr")
+  Just post <- readArticle (postsDir </> "A001_HelloWorld.lidr")
     | Nothing => do
       let html = text "Failed to read file"
       sendResp' 500 (render html) conn

@@ -57,8 +57,8 @@ viewTags tags =
         )
     ]
 
-viewArticle : Article -> Html
-viewArticle article =
+viewArticle : (id : String) -> Article -> Html
+viewArticle id article =
   ContentBox.view
     (div
       []
@@ -76,7 +76,7 @@ viewArticle article =
       , p
           []
           [ a
-              [ href "#" ]
+              [ href ("/posts/view?id=" ++ id) ]
               [ text "Read more" ]
           ]
       ]
@@ -99,16 +99,16 @@ on : (b -> b -> c) -> (a -> b) -> a -> a -> c
 on f g x y = g x `f` g y
 
 export
-view : List Article -> Html
+view : List (String, Article) -> Html
 view articles =
-  let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles articles)
+  let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd articles))
   in div
     [ style "display" "flex"
     ]
     [ div
         [ style "flex" "1"
         ]
-        (map (wrapInMarginTopContainer . viewArticle) articles)
+        (map (wrapInMarginTopContainer . uncurry viewArticle) articles)
     , div
         [ style "width" "250px"
         , style "margin-left" "15px"

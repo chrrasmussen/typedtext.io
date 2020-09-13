@@ -12,7 +12,7 @@ routes : List Route
 routes =
   [ get "/" index
   , get "/posts" viewPosts
-  , get "/article" viewArticle
+  , get "/posts/view" viewArticle
   , get "/about" viewAbout
   ]
 
