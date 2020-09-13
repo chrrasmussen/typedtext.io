@@ -2,6 +2,8 @@ module Typedtext.Article.Id
 
 import Data.List
 
+%default total
+
 
 export
 data ArticleId = MkArticleId Integer

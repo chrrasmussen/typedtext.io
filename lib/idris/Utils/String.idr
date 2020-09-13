@@ -1,5 +1,8 @@
 module Utils.String
 
+%default total
+
+
 export
 showSep : String -> List String -> String
 showSep sep [] = ""

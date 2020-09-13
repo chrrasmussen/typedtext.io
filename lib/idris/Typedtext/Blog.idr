@@ -19,8 +19,8 @@ import Typedtext.Views.ShowArticle
 import Typedtext.Views.Tags
 import Typedtext.Views.About
 
-
 %default total
+
 
 postsDir : String
 postsDir = "lib/idris/Typedtext/Articles"
