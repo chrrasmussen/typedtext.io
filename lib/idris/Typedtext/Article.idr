@@ -12,7 +12,8 @@ import Data.String.Parser
 public export
 record Article where
   constructor MkArticle
-  author : String
+  authorName : String
+  authorEmail : String
   publishDate : String
   tags : List String
   title : String
@@ -21,7 +22,7 @@ record Article where
 export
 Show Article where
   show p =
-    unwords ["MkArticle", show p.author, show p.publishDate, show p.tags, show p.title, show p.body]
+    unwords ["MkArticle", show p.authorName, show p.authorEmail, show p.publishDate, show p.tags, show p.title, show p.body]
 
 
 -- PARSING
@@ -62,9 +63,9 @@ article = do
   title' <- title
   spaces
   body' <- takeWhile (const True)
-  let Just [author', publishDate', tags'] = traverse (\f => lookup f fs) ["AUTHOR", "PUBLISH_DATE", "TAGS"]
-    | _ => fail "Could not find fields"
-  pure $ MkArticle author' publishDate' (splitTags tags') title' body'
+  let Just [authorName', authorEmail', publishDate', tags'] = traverse (\f => lookup f fs) ["AUTHOR_NAME", "AUTHOR_EMAIL", "PUBLISH_DATE", "TAGS"]
+    | _ => fail "Could not find all fields"
+  pure $ MkArticle authorName' authorEmail' publishDate' (splitTags tags') title' body'
 
 export
 parseArticle : String -> Either String Article

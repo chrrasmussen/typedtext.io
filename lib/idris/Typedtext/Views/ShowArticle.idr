@@ -8,11 +8,15 @@ import Typedtext.Views.ContentBox
 
 %default total
 
-viewAuthor : String -> Html
-viewAuthor author =
+subject : String -> String
+subject title =
+  "[typedtext.io] " ++ title
+
+viewAuthor : (name : String) -> (email : String) -> (articleTitle : String) -> Html
+viewAuthor name email articleTitle =
   a
-    [ href "#" ]
-    [ text author ]
+    [ href ("mailto:" ++ email ++ "?subject=" ++ subject articleTitle) ]
+    [ text name ]
 
 viewTag : String -> Html
 viewTag tag =
@@ -43,7 +47,7 @@ view article =
             [ div
                 []
                 [ text "Author: "
-                , viewAuthor article.author
+                , viewAuthor article.authorName article.authorEmail article.title
                 ]
             , div
                 []
