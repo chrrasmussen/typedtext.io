@@ -6,6 +6,12 @@ h2 {
   font-size: 20px;
 }
 
+hr {
+  background-color: #AAA;
+  height: 1px;
+  border: none;
+}
+
 a {
   color: black;
   text-decoration: underline;
@@ -19,7 +25,19 @@ a:hover {
   text-decoration: none;
 }
 
+.footer {
+  line-height: 1.4em
+}
+
 .footer a {
+  color: #888888;
+}
+
+.article-footer {
+  color: #888888;
+}
+
+.article-footer a {
   color: #888888;
 }
 

@@ -169,7 +169,7 @@ view selectedPage content =
         [ style "margin" "0"
         , style "font-family" "-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
         , style "font-size" "16px"
-        , style "line-height" "1.2em"
+        , style "line-height" "1.4em"
         ]
         [ header selectedPage
         , div
