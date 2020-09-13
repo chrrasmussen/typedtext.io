@@ -1,2 +1,24 @@
-/* This file is for your main application css. */
-@import "./phoenix.css";
+h2 {
+  font-size: 20px;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: underline;
+}
+
+.header a:link,
+.header a:visited,
+.header a:hover,
+.header a:active {
+  text-decoration: none;
+}
+
+.footer a:link,
+.footer a:visited,
+.footer a:hover,
+.footer a:active {
+  color: #888888;
+}
