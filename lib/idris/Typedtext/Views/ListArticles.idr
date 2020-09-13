@@ -4,6 +4,7 @@ import Data.List
 import Data.SortedMap
 import Html
 import Typedtext.Article
+import Typedtext.Article.Id
 import Typedtext.Views.ContentBox
 
 %default total
@@ -57,7 +58,7 @@ viewTags tags =
         )
     ]
 
-viewArticle : (id : String) -> Article -> Html
+viewArticle : ArticleId -> Article -> Html
 viewArticle id article =
   ContentBox.view
     (div
@@ -76,7 +77,7 @@ viewArticle id article =
       , p
           []
           [ a
-              [ href ("/posts/view?id=" ++ id) ]
+              [ href ("/posts/view?id=" ++ show id) ]
               [ text "Read more" ]
           ]
       ]
@@ -99,7 +100,7 @@ on : (b -> b -> c) -> (a -> b) -> a -> a -> c
 on f g x y = g x `f` g y
 
 export
-view : List (String, Article) -> Html
+view : List (ArticleId, Article) -> Html
 view articles =
   let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd articles))
   in div

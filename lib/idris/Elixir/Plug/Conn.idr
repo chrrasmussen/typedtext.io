@@ -80,10 +80,10 @@ getReqPath : Conn -> String
 getReqPath conn = get (MkAtom "request_path") conn
 
 export
-getReqQueryParam : (key : String) -> ErlDecoder value -> Conn -> Maybe value
-getReqQueryParam key decoder conn = do
+getReqQueryParam : (key : String) -> Conn -> Maybe String
+getReqQueryParam key conn = do
   let queryParams = get (MkAtom "query_params") conn
-  lookup key decoder queryParams
+  lookup key string queryParams
 
 export
 getReqHeader : (key : String) -> Conn -> List String

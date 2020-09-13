@@ -10,6 +10,7 @@ import Elixir.Markdown
 import Elixir.Plug.Conn
 import Html
 import Typedtext.Article
+import Typedtext.Article.Id
 import Typedtext.Views.Layout
 import Typedtext.Views.ListArticles
 import Typedtext.Views.ShowArticle
@@ -28,6 +29,13 @@ readArticle path = do
   let Right post = parseArticle contents
     | Left _ => pure Nothing
   pure $ Just post
+
+getArticleAndId : (file : String) -> IO (Maybe (ArticleId, Article))
+getArticleAndId file = do
+  let path = postsDir </> file
+  Just article <- readArticle path
+    | Nothing => pure Nothing
+  pure $ Just (filenameToArticleId file, article)
 
 sendResp' : Int -> String -> Conn -> IO Conn
 sendResp' status content conn = do
@@ -54,12 +62,12 @@ index conn = do
 export
 viewPosts : Conn -> IO Conn
 viewPosts conn = do
-  let tag = getReqQueryParam "tag" string conn
+  let tag = getReqQueryParam "tag" conn
   Right files <- dirEntries postsDir
     | Left _ => do
       let html = text "Failed to read directory"
       sendHtml 500 html conn
-  articles <- traverse getArticle files
+  articles <- traverse getArticleAndId files
   let articles' = reverse $ filter (mustIncludeTag tag . snd) $ mapMaybe id articles
   let html = Layout.view Posts (ListArticles.view articles')
   sendHtml 200 html conn
@@ -67,21 +75,23 @@ viewPosts conn = do
     mustIncludeTag : Maybe String -> Article -> Bool
     mustIncludeTag Nothing _ = True
     mustIncludeTag (Just tag) article = tag `elem` article.tags
-    getArticle : (file : String) -> IO (Maybe (String, Article))
-    getArticle file = do
-      let path = postsDir </> file
-      Just article <- readArticle path
-        | Nothing => pure Nothing
-      pure $ Just (file, article)
 
 export
 viewArticle : Conn -> IO Conn
 viewArticle conn = do
-  let Just id = getReqQueryParam "id" string conn
+  let Just id = getReqQueryParam "id" conn
     | Nothing => do
       let html = text "Not found"
       sendHtml 404 html conn
-  Just post <- readArticle (postsDir </> id)
+  Right files <- dirEntries postsDir
+    | Left _ => do
+      let html = text "Failed to read directory"
+      sendHtml 500 html conn
+  let Just file = articleIdToFilename files (cast id)
+    | Nothing => do
+      let html = text "Not found"
+      sendHtml 404 html conn
+  Just post <- readArticle (postsDir </> file)
     | Nothing => do
       let html = text "Failed to read file"
       sendHtml 500 html conn
