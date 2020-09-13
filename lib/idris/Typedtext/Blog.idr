@@ -13,6 +13,7 @@ import Typedtext.Article
 import Typedtext.Views.Layout
 import Typedtext.Views.ListArticles
 import Typedtext.Views.ShowArticle
+import Typedtext.Views.About
 
 
 %default total
@@ -65,6 +66,14 @@ viewArticle conn = do
       let html = text "Failed to read file"
       sendResp' 500 (render html) conn
   let html = Layout.view (ShowArticle.view post)
+  let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
+    | Nothing => pure conn
+  sendResp' 200 (render html) conn
+
+export
+viewAbout : Conn -> IO Conn
+viewAbout conn = do
+  let html = Layout.view About.view
   let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
     | Nothing => pure conn
   sendResp' 200 (render html) conn
