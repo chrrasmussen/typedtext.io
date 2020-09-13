@@ -81,7 +81,7 @@ header selectedPage =
                 [ href "/"
                 ]
                 [ img
-                    [ src "images/logo.png"
+                    [ src "/images/logo.png"
                     , alt "Logo for typedtext.io"
                     , style "width" "190px"
                     , style "height" "60px"
@@ -161,7 +161,7 @@ view selectedPage content =
         [ title [] [ text "typedtext.io" ]
         ]
         , link
-            [ href "css/app.css"
+            [ href "/css/app.css"
             , rel "stylesheet"
             ]
             []
