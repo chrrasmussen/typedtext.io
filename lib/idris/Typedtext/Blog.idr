@@ -54,15 +54,19 @@ index conn = do
 export
 viewPosts : Conn -> IO Conn
 viewPosts conn = do
+  let tag = getReqQueryParam "tag" string conn
   Right files <- dirEntries postsDir
     | Left _ => do
       let html = text "Failed to read directory"
       sendHtml 500 html conn
   articles <- traverse getArticle files
-  let articles' = reverse (mapMaybe id articles)
+  let articles' = reverse $ filter (mustIncludeTag tag . snd) $ mapMaybe id articles
   let html = Layout.view Posts (ListArticles.view articles')
   sendHtml 200 html conn
   where
+    mustIncludeTag : Maybe String -> Article -> Bool
+    mustIncludeTag Nothing _ = True
+    mustIncludeTag (Just tag) article = tag `elem` article.tags
     getArticle : (file : String) -> IO (Maybe (String, Article))
     getArticle file = do
       let path = postsDir </> file

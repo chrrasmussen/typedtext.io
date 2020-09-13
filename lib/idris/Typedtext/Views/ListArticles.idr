@@ -31,7 +31,7 @@ viewTag (tag, count) =
   li
     []
     [ a
-        [ href "#" ]
+        [ href ("/posts?tag=" ++ tag) ]
         [ text tag ]
     , span
         [ style "margin-left" "8px" ]
