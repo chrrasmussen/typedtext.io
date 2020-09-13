@@ -35,6 +35,14 @@ sendResp' status content conn = do
     | Nothing => pure conn
   pure conn
 
+sendHtml : Int -> Html -> Conn -> IO Conn
+sendHtml status html conn = do
+  let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
+    | Nothing => pure conn
+  sendResp' status (render html) conn
+
+
+-- HANDLERS
 
 export
 index : Conn -> IO Conn
@@ -43,20 +51,17 @@ index conn = do
     | Nothing => pure conn
   sendResp' 302 "" conn
 
-
 export
 viewPosts : Conn -> IO Conn
 viewPosts conn = do
   Right files <- dirEntries postsDir
     | Left _ => do
       let html = text "Failed to read directory"
-      sendResp' 500 (render html) conn
+      sendHtml 500 html conn
   articles <- traverse getArticle files
   let articles' = reverse (mapMaybe id articles)
   let html = Layout.view Posts (ListArticles.view articles')
-  let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
-    | Nothing => pure conn
-  sendResp' 200 (render html) conn
+  sendHtml 200 html conn
   where
     getArticle : (file : String) -> IO (Maybe (String, Article))
     getArticle file = do
@@ -71,16 +76,12 @@ viewArticle conn = do
   Just post <- readArticle (postsDir </> "A001_HelloWorld.lidr")
     | Nothing => do
       let html = text "Failed to read file"
-      sendResp' 500 (render html) conn
+      sendHtml 500 html conn
   let html = Layout.view Posts (ShowArticle.view post)
-  let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
-    | Nothing => pure conn
-  sendResp' 200 (render html) conn
+  sendHtml 200 html conn
 
 export
 viewAbout : Conn -> IO Conn
 viewAbout conn = do
   let html = Layout.view About About.view
-  let Just conn = putRespHeader "Content-Type" "text/html; charset=UTF-8" conn
-    | Nothing => pure conn
-  sendResp' 200 (render html) conn
+  sendHtml 200 html conn
