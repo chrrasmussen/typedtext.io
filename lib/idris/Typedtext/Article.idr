@@ -48,6 +48,9 @@ comment body = do
   string "-->"
   pure result
 
+foldMarker : Parser ()
+foldMarker = comment (string "FOLD")
+
 field : Parser (String, String)
 field = do
   key <- takeWhile (\t => (not (t `elem` [':', '\n'])))
@@ -74,7 +77,7 @@ article = do
   spaces
   title' <- title
   spaces
-  intro' <- map pack $ manyTill anyChar (string "\n\n" <|> eos)
+  intro' <- map pack $ manyTill anyChar (foldMarker <|> eos)
   body' <- optional $ takeWhile (const True)
   let Just [authorName', authorEmail', publishDate', tags'] = traverse (\f => lookup f fs) ["AUTHOR_NAME", "AUTHOR_EMAIL", "PUBLISH_DATE", "TAGS"]
     | _ => fail "Could not find all fields"
