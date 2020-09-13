@@ -73,7 +73,11 @@ viewPosts conn = do
 export
 viewArticle : Conn -> IO Conn
 viewArticle conn = do
-  Just post <- readArticle (postsDir </> "A001_HelloWorld.lidr")
+  let Just id = getReqQueryParam "id" string conn
+    | Nothing => do
+      let html = text "Not found"
+      sendHtml 404 html conn
+  Just post <- readArticle (postsDir </> id)
     | Nothing => do
       let html = text "Failed to read file"
       sendHtml 500 html conn
