@@ -1,43 +1,13 @@
 module Typedtext.Views.ListArticles
 
-import Data.List
-import Data.SortedMap
 import Html
 import Typedtext.Article
 import Typedtext.Article.Id
 import Typedtext.Views.ContentBox
+import Typedtext.Views.Tags
 
 %default total
 
-
-viewBadge : Integer -> Html
-viewBadge count =
-  let size : Integer = 24
-  in span
-    [ style "display" "inline-block"
-    , style "width" (cast size ++ "px")
-    , style "height" (cast size ++ "px")
-    , style "line-height" (cast size ++ "px")
-    , style "border-radius" (cast (size `div` 2) ++ "px")
-    , style "background-color" "#4A4A4A"
-    , style "color" "white"
-    , style "font-size" "12px"
-    , style "text-align" "center"
-    ]
-    [ text (cast count)
-    ]
-
-viewTag : (String, Integer) -> Html
-viewTag (tag, count) =
-  li
-    []
-    [ a
-        [ href ("/posts?tag=" ++ tag) ]
-        [ text tag ]
-    , span
-        [ style "margin-left" "8px" ]
-        [ viewBadge count ]
-    ]
 
 viewTags : List (String, Integer) -> Html
 viewTags tags =
@@ -89,21 +59,10 @@ wrapInMarginTopContainer content =
     [ className "margintop15-skipfirst" ]
     [ content ]
 
-countElements : Ord a => List a -> List (a, Integer)
-countElements xs = toList $ foldl (mergeWith (+)) empty (map (\key => singleton key 1) xs)
-
-tagsFromArticles : List Article -> List (String, Integer)
-tagsFromArticles articles = countElements (concatMap (.tags) articles)
-
--- TODO: Unexported version exists in `Data.Either`. Move and export?
-on : (b -> b -> c) -> (a -> b) -> a -> a -> c
-on f g x y = g x `f` g y
-
 export
-view : List (ArticleId, Article) -> Html
-view articles =
-  let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd articles))
-  in div
+view : List (ArticleId, Article) -> List (String, Integer) -> Html
+view articles topTags =
+  div
     [ style "display" "flex"
     ]
     [ div

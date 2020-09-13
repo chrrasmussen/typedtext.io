@@ -13,6 +13,7 @@ routes =
   [ get "/" index
   , get "/posts" viewPosts
   , get "/posts/view" viewArticle
+  , get "/tags" viewTags
   , get "/about" viewAbout
   ]
 

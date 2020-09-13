@@ -9,11 +9,14 @@ import Erlang.System.Directory
 import Elixir.Markdown
 import Elixir.Plug.Conn
 import Html
+import Utils.Function
 import Typedtext.Article
 import Typedtext.Article.Id
+import Typedtext.Tags
 import Typedtext.Views.Layout
 import Typedtext.Views.ListArticles
 import Typedtext.Views.ShowArticle
+import Typedtext.Views.Tags
 import Typedtext.Views.About
 
 
@@ -69,7 +72,8 @@ viewPosts conn = do
       sendHtml 500 html conn
   articles <- traverse getArticleAndId files
   let articles' = reverse $ filter (mustIncludeTag tag . snd) $ mapMaybe id articles
-  let html = Layout.view Posts (ListArticles.view articles')
+  let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd articles'))
+  let html = Layout.view Posts (ListArticles.view articles' topTags)
   sendHtml 200 html conn
   where
     mustIncludeTag : Maybe String -> Article -> Bool
@@ -96,6 +100,19 @@ viewArticle conn = do
       let html = text "Failed to read file"
       sendHtml 500 html conn
   let html = Layout.view Posts (ShowArticle.view post)
+  sendHtml 200 html conn
+
+export
+viewTags : Conn -> IO Conn
+viewTags conn = do
+  Right files <- dirEntries postsDir
+    | Left _ => do
+      let html = text "Failed to read directory"
+      sendHtml 500 html conn
+  articles <- traverse getArticleAndId files
+  let articles' = reverse $ mapMaybe id articles
+  let tags = sortBy (compare `on` fst) (tagsFromArticles (map snd articles'))
+  let html = Layout.view Tags (Tags.view tags)
   sendHtml 200 html conn
 
 export
