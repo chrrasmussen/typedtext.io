@@ -38,6 +38,14 @@ sendResp' status content conn = do
 export
 index : Conn -> IO Conn
 index conn = do
+  let Just conn = putRespHeader "Location" "/posts" conn
+    | Nothing => pure conn
+  sendResp' 302 "" conn
+
+
+export
+viewPosts : Conn -> IO Conn
+viewPosts conn = do
   Right files <- dirEntries postsDir
     | Left _ => do
       let html = text "Failed to read directory"

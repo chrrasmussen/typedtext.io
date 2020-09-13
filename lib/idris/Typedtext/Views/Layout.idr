@@ -26,8 +26,8 @@ footerTextColor = "#888888"
 
 -- VIEW
 
-menuButton : (isActive : Bool) -> (title : String) -> Html
-menuButton isActive title =
+menuButton : (isActive : Bool) -> (url : String) -> (title : String) -> Html
+menuButton isActive url title =
   let
     backgroundColor = if isActive then menuBarActiveColor else headerBackgroundColor
     textColor = if isActive then headerBackgroundColor else menuBarActiveColor
@@ -35,7 +35,7 @@ menuButton isActive title =
     [ style "display" "inline-block"
     ]
     [ a
-        [ href "#"
+        [ href url
         , style "display" "inline-block"
         , style "line-height" (cast menuBarHeight ++ "px")
         , style "background-color" backgroundColor
@@ -66,7 +66,7 @@ header =
               [ style "display" "none" ]
               [ text "typedtext.io" ]
             , a
-                [ href "#"
+                [ href "/"
                 ]
                 [ img
                     [ src "images/logo.png"
@@ -79,9 +79,9 @@ header =
             ]
         , div
             [ style "background-color" "green" ]
-            [ menuButton True "Posts"
-            , menuButton False "Tags"
-            , menuButton False "About"
+            [ menuButton True "/posts" "Posts"
+            , menuButton False "/tags" "Tags"
+            , menuButton False "/about" "About"
             ]
         ]
     ]

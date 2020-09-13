@@ -11,6 +11,7 @@ import Typedtext.Blog
 routes : List Route
 routes =
   [ get "/" index
+  , get "/posts" viewPosts
   , get "/article" viewArticle
   ]
 
