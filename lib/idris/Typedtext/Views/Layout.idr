@@ -159,6 +159,12 @@ view selectedPage content =
     [ head
         []
         [ title [] [ text "typedtext.io" ]
+        , link
+            [ rel "shortcut icon"
+            , href "favicon.png"
+            , type "image/x-icon"
+            ]
+            []
         ]
         , link
             [ href "/css/app.css"
