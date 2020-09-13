@@ -1,5 +1,7 @@
 module Typedtext.Views.ListArticles
 
+import Data.List
+import Data.SortedMap
 import Html
 import Typedtext.Article
 import Typedtext.Views.ContentBox
@@ -46,9 +48,10 @@ viewTags tags =
           []
           [ h2
               []
-              [ text "Tags" ]
+              [ text "Top tags" ]
           , ul
-              []
+              [ style "line-height" "24px"
+              ]
               (map viewTag tags)
           ]
         )
@@ -85,10 +88,21 @@ wrapInMarginTopContainer content =
     [ className "margintop15-skipfirst" ]
     [ content ]
 
+countElements : Ord a => List a -> List (a, Integer)
+countElements xs = toList $ foldl (mergeWith (+)) empty (map (\key => singleton key 1) xs)
+
+tagsFromArticles : List Article -> List (String, Integer)
+tagsFromArticles articles = countElements (concatMap (.tags) articles)
+
+-- TODO: Unexported version exists in `Data.Either`. Move and export?
+on : (b -> b -> c) -> (a -> b) -> a -> a -> c
+on f g x y = g x `f` g y
+
 export
 view : List Article -> Html
 view articles =
-  div
+  let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles articles)
+  in div
     [ style "display" "flex"
     ]
     [ div
@@ -99,9 +113,6 @@ view articles =
         [ style "width" "250px"
         , style "margin-left" "15px"
         ]
-        [ viewTags
-            [ ("non-technical", 5)
-            , ("first", 1)
-            ]
+        [ viewTags topTags
         ]
     ]
