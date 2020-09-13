@@ -72,8 +72,10 @@ generateAttrs attrs =
       ]
 
 %runElab generateAttrs
-  [ -- Common
-    ("id", AStr), ("title", AStr), ("hidden", ABool)
+  [ -- Document
+    ("charset", AStr)
+    -- Common
+  , ("id", AStr), ("title", AStr), ("hidden", ABool)
     -- Inputs
   , ("type", AStr), ("value", AStr), ("checked", ABool)
   , ("placeholder", AStr), ("selected", ABool)

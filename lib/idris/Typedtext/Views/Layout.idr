@@ -159,6 +159,16 @@ view selectedPage content =
     [ head
         []
         [ title [] [ text "typedtext.io" ]
+        , meta
+            [ name "author"
+            , attr "content" "Christian Rasmussen"
+            ]
+            []
+        , meta
+            [ name "description"
+            , attr "content" "Technology blog by Christian Rasmussen"
+            ]
+            []
         , link
             [ rel "shortcut icon"
             , href "favicon.png"
