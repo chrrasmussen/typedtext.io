@@ -22,3 +22,7 @@ a:active {
 .footer a:active {
   color: #888888;
 }
+
+.margintop15-skipfirst + .margintop15-skipfirst {
+  margin-top: 15px;
+}

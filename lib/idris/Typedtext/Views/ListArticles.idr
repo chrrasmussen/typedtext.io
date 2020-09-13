@@ -67,6 +67,12 @@ viewArticle article =
       ]
     )
 
+wrapInMarginTopContainer : Html -> Html
+wrapInMarginTopContainer content =
+  div
+    [ className "margintop15-skipfirst" ]
+    [ content ]
+
 export
 view : List Article -> Html
 view articles =
@@ -75,11 +81,8 @@ view articles =
     ]
     [ div
         [ style "flex" "1"
-        , style "display" "flex"
-        , style "flex-direction" "column"
-        , style "gap" "15px"
         ]
-        (map viewArticle articles)
+        (map (wrapInMarginTopContainer . viewArticle) articles)
     , div
         [ style "width" "250px"
         , style "margin-left" "15px"
