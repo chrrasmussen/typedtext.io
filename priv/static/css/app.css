@@ -1,26 +1,30 @@
+h1, h2, h3, h4, h5, h6 {
+  color: #4A4A4A;
+}
+
 h2 {
   font-size: 20px;
 }
 
-a:link,
-a:visited,
-a:hover,
-a:active {
+a {
+  color: black;
   text-decoration: underline;
 }
 
-.header a:link,
-.header a:visited,
-.header a:hover,
-.header a:active {
+a:hover {
   text-decoration: none;
 }
 
-.footer a:link,
-.footer a:visited,
-.footer a:hover,
-.footer a:active {
+.header a {
+  text-decoration: none;
+}
+
+.footer a {
   color: #888888;
+}
+
+.tags ul {
+  padding-left: 1em;
 }
 
 .margintop15-skipfirst + .margintop15-skipfirst {

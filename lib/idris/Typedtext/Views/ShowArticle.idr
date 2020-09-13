@@ -17,7 +17,12 @@ view article =
     ContentBox.view
       (div
         []
-        [ h1 [] [text article.title]
+        [ span
+            [ style "float" "right"
+            , style "color" "#888888"
+            ]
+            [ text article.publishDate ]
+        , h1 [] [text article.title]
         , unsafeRaw $ htmlString
         ]
       )

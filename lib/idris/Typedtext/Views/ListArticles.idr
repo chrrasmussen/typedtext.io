@@ -39,7 +39,8 @@ viewTag (tag, count) =
 viewTags : List (String, Integer) -> Html
 viewTags tags =
   div
-    []
+    [ className "tags"
+    ]
     [ ContentBox.view
         (div
           []
@@ -58,12 +59,23 @@ viewArticle article =
   ContentBox.view
     (div
       []
-      [ a
-          [ attr "href" "#" ]
-          [ text article.title ]
-      , span
-          [ style "float" "right" ]
+      [ span
+          [ style "float" "right"
+          , style "color" "#888888"
+          ]
           [ text article.publishDate ]
+      , h2
+          []
+          [ text article.title ]
+      , p
+          []
+          [ text "..." ]
+      , p
+          []
+          [ a
+              [ href "#" ]
+              [ text "Read more" ]
+          ]
       ]
     )
 
