@@ -17,12 +17,24 @@ record Article where
   publishDate : String
   tags : List String
   title : String
-  body : String
+  intro : String
+  body : Maybe String
 
 export
 Show Article where
   show p =
     unwords ["MkArticle", show p.authorName, show p.authorEmail, show p.publishDate, show p.tags, show p.title, show p.body]
+
+
+-- HELPER FUNCTIONS
+
+anyChar : Parser Char
+anyChar = satisfy (const True)
+
+manyTill : Parser a -> Parser end -> Parser (List a)
+manyTill p end =
+  do end; pure []
+    <|> do x <- p; xs <- manyTill p end; pure (x :: xs)
 
 
 -- PARSING
@@ -62,10 +74,11 @@ article = do
   spaces
   title' <- title
   spaces
-  body' <- takeWhile (const True)
+  intro' <- map pack $ manyTill anyChar (string "\n\n" <|> eos)
+  body' <- optional $ takeWhile (const True)
   let Just [authorName', authorEmail', publishDate', tags'] = traverse (\f => lookup f fs) ["AUTHOR_NAME", "AUTHOR_EMAIL", "PUBLISH_DATE", "TAGS"]
     | _ => fail "Could not find all fields"
-  pure $ MkArticle authorName' authorEmail' publishDate' (splitTags tags') title' body'
+  pure $ MkArticle authorName' authorEmail' publishDate' (splitTags tags') title' intro' body'
 
 export
 parseArticle : String -> Either String Article

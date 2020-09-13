@@ -27,31 +27,36 @@ viewTag tag =
 export
 view : Article -> Html
 view article =
-  let Just htmlString = markdownToHtml article.body
-    | Nothing => text "Unable to parse text as Markdown"
+  let
+    Just introHtml = markdownToHtml article.intro
+      | Nothing => text "Unable to parse text as Markdown"
+    bodyHtml = article.body >>= markdownToHtml
   in
     ContentBox.view
       (div
         []
-        [ span
-            [ style "float" "right"
-            , style "color" "#888888"
-            ]
-            [ text article.publishDate ]
-        , h1 [] [text article.title]
-        , unsafeRaw $ htmlString
-        , hr [] []
-        , div
-            [ className "article-footer"
-            ]
-            [ div
-                []
-                [ text "Author: "
-                , viewAuthor article.authorName article.authorEmail article.title
-                ]
-            , div
-                []
-                (text "Tags: " :: intersperse (text ", ") (map viewTag article.tags))
-            ]
-        ]
+        (
+          [ span
+              [ style "float" "right"
+              , style "color" "#888888"
+              ]
+              [ text article.publishDate ]
+          , h1 [] [text article.title]
+          , unsafeRaw introHtml
+          ] ++ toList (unsafeRaw <$> bodyHtml) ++
+          [ hr [] []
+          , div
+              [ className "article-footer"
+              ]
+              [ div
+                  []
+                  [ text "Author: "
+                  , viewAuthor article.authorName article.authorEmail article.title
+                  ]
+              , div
+                  []
+                  (text "Tags: " :: intersperse (text ", ") (map viewTag article.tags))
+              ]
+          ]
+        )
       )

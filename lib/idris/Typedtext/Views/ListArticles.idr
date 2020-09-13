@@ -1,6 +1,7 @@
 module Typedtext.Views.ListArticles
 
 import Html
+import Elixir.Markdown
 import Typedtext.Article
 import Typedtext.Article.Id
 import Typedtext.Views.ContentBox
@@ -30,28 +31,30 @@ viewTags tags =
 
 viewArticle : ArticleId -> Article -> Html
 viewArticle id article =
-  ContentBox.view
-    (div
-      []
-      [ span
-          [ style "float" "right"
-          , style "color" "#888888"
-          ]
-          [ text article.publishDate ]
-      , h2
-          []
-          [ text article.title ]
-      , p
-          []
-          [ text "..." ]
-      , p
-          []
-          [ a
-              [ href ("/posts/view?id=" ++ show id) ]
-              [ text "Read more" ]
-          ]
-      ]
-    )
+  let
+    Just introHtml = markdownToHtml article.intro
+      | Nothing => text "Unable to parse text as Markdown"
+  in
+    ContentBox.view
+      (div
+        []
+        [ span
+            [ style "float" "right"
+            , style "color" "#888888"
+            ]
+            [ text article.publishDate ]
+        , h2
+            []
+            [ text article.title ]
+        , unsafeRaw introHtml
+        , p
+            []
+            [ a
+                [ href ("/posts/view?id=" ++ show id) ]
+                [ text "Read more" ]
+            ]
+        ]
+      )
 
 wrapInMarginTopContainer : Html -> Html
 wrapInMarginTopContainer content =
