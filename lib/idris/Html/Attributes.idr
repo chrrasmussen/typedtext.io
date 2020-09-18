@@ -49,9 +49,6 @@ attrType AStr = IPrimVal EmptyFC StringType
 attrType ABool = IVar EmptyFC (NS (MkNS ["Prelude"]) (UN "Bool"))
 attrType AInt = IPrimVal EmptyFC IntegerType
 
-attrFnType : TTImp -> TTImp
-attrFnType inp = IPi EmptyFC MW ExplicitArg Nothing inp (IVar EmptyFC (UN "Attribute"))
-
 callAttrFn : (ty : AttributeType) -> TTImp
 callAttrFn AStr = IVar EmptyFC (UN "Attr")
 callAttrFn ABool = IVar EmptyFC (UN "boolAttr")
@@ -63,7 +60,7 @@ generateAttrs attrs =
   where
     attrToDecls : (String, AttributeType) -> List Decl
     attrToDecls (attr, ty) =
-      [ IClaim EmptyFC MW Export [Inline] (MkTy EmptyFC (UN attr) (attrFnType (attrType ty)))
+      [ IClaim EmptyFC MW Export [Inline] (MkTy EmptyFC (UN attr) `(~(attrType ty) -> Attribute))
       , IDef EmptyFC (UN attr)
           [ PatClause EmptyFC
               (IVar EmptyFC (UN attr))
