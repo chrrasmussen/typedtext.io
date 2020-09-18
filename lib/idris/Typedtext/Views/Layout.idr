@@ -181,11 +181,26 @@ view selectedPage content =
             , rel "stylesheet"
             ]
             []
+        , link
+            [ href "/css/highlight-github.css"
+            , rel "stylesheet"
+            ]
+            []
         , script
             [ boolAttr "async" True
             , boolAttr "defer" True
             , attr "data-domain" "typedtext.io"
             , src "https://plausible.io/js/plausible.js"
+            ]
+            []
+        , script
+            [ boolAttr "defer" True
+            , src "/js/highlight.pack.js"
+            ]
+            []
+        , script
+            [ boolAttr "defer" True
+            , src "/js/app.js"
             ]
             []
     , body
