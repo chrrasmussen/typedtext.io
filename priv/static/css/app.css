@@ -12,6 +12,16 @@ hr {
   border: none;
 }
 
+code.inline {
+  padding: 3px 6px;
+  background-color: #F8F8F8;
+  border-radius: 5px;
+}
+
+pre > code {
+  border-radius: 5px;
+}
+
 a {
   color: black;
   text-decoration: underline;
