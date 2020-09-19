@@ -200,6 +200,11 @@ view selectedPage content =
             []
         , script
             [ boolAttr "defer" True
+            , src "/js/highlight-idris.js"
+            ]
+            []
+        , script
+            [ boolAttr "defer" True
             , src "/js/app.js"
             ]
             []
