@@ -154,7 +154,7 @@ view : SelectedPage -> Html -> Html
 view selectedPage content =
   let pagePadding = 15
   in html
-    [ style "background-color" "#EEEEEE"
+    [ style "background-color" "#F2F0ED"
     ]
     [ head
         []
