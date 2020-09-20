@@ -1,4 +1,4 @@
-module Typedtext.Views.ContentBox
+module Typedtext.Views.Helpers.ContentBox
 
 import Html
 

@@ -1,8 +1,8 @@
-module Typedtext.Views.Tags
+module Typedtext.Views.Helpers.Tags
 
 import Html
 import Typedtext.Tags
-import Typedtext.Views.ContentBox
+import Typedtext.Views.Helpers.ContentBox
 
 %default total
 

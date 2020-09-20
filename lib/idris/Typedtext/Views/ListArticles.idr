@@ -4,8 +4,9 @@ import Html
 import Elixir.Markdown
 import Typedtext.Article
 import Typedtext.Article.Id
-import Typedtext.Views.ContentBox
-import Typedtext.Views.Tags
+import Typedtext.Views.Helpers.ContentBox
+import Typedtext.Views.Helpers.Article
+import Typedtext.Views.Helpers.Tags
 
 %default total
 
@@ -45,7 +46,7 @@ viewArticle id article =
               ]
           ]
         else
-          []
+          [ viewFooter article ]
   in
     ContentBox.view
       (div
