@@ -13,8 +13,8 @@ transformAst fromText fromNode ast =
   join $ erlDecodeMay
     (fromText <$> string
       <|> (\(MkTuple4 text attrs nodes ctxt) =>
-        fromNode text (erlUnsafeCast (List (ErlTuple2 String String)) attrs) (erlUnsafeCast (List ErlTerm) nodes) ctxt)
-          <$> tuple4 string any any anyMap)
+              fromNode text (erlUnsafeCast (List (ErlTuple2 String String)) attrs) (erlUnsafeCast (List ErlTerm) nodes) ctxt)
+            <$> tuple4 string any any anyMap)
     ast
 
 mkNode : String -> List (ErlTuple2 String String) -> List ErlTerm -> ErlAnyMap -> ErlTerm
