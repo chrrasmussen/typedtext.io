@@ -14,12 +14,13 @@ hr {
 
 code.inline {
   padding: 3px 6px;
-  background-color: #F8F8F8;
+  background-color: #F4F4F4;
   border-radius: 5px;
 }
 
-pre > code {
-  border-radius: 5px;
+code.hljs { /* Override styles in highlight-github.css */
+  background-color: #F4F4F4;
+  border-radius: 8px;
 }
 
 a {
