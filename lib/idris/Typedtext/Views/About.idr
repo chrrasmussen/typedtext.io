@@ -2,7 +2,7 @@ module Typedtext.Views.About
 
 import Html
 import Elixir.Markdown
-import Typedtext.Views.ContentBox
+import Typedtext.Views.Helpers.ContentBox
 
 %default total
 

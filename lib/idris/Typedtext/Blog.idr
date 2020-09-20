@@ -16,8 +16,8 @@ import Typedtext.Tags
 import Typedtext.Views.Layout
 import Typedtext.Views.ListArticles
 import Typedtext.Views.ShowArticle
-import Typedtext.Views.Tags
 import Typedtext.Views.About
+import Typedtext.Views.Helpers.Tags
 
 %default total
 
