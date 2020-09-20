@@ -150,15 +150,15 @@ footer =
 
 
 export
-view : SelectedPage -> Html -> Html
-view selectedPage content =
+view : (title : String) -> SelectedPage -> Html -> Html
+view titleStr selectedPage content =
   let pagePadding = 15
   in html
     [ style "background-color" "#F2F0ED"
     ]
     [ head
         []
-        [ title [] [ text "typedtext.io" ]
+        [ title [] [ text (titleStr ++ " — typedtext.io") ]
         , meta
             [ name "author"
             , attr "content" "Christian Rasmussen"

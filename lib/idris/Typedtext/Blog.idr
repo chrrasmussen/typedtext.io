@@ -73,7 +73,7 @@ viewPosts conn = do
   articles <- traverse getArticleAndId files
   let articles' = reverse $ filter (mustIncludeTag tag . snd) $ mapMaybe id articles
   let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd articles'))
-  let html = Layout.view Posts (ListArticles.view articles' topTags)
+  let html = Layout.view "Posts" Posts (ListArticles.view articles' topTags)
   sendHtml 200 html conn
   where
     mustIncludeTag : Maybe String -> Article -> Bool
@@ -95,11 +95,11 @@ viewArticle conn = do
     | Nothing => do
       let html = text "Not found"
       sendHtml 404 html conn
-  Just post <- readArticle (postsDir </> file)
+  Just article <- readArticle (postsDir </> file)
     | Nothing => do
       let html = text "Failed to read file"
       sendHtml 500 html conn
-  let html = Layout.view Posts (ShowArticle.view post)
+  let html = Layout.view article.title Posts (ShowArticle.view article)
   sendHtml 200 html conn
 
 export
@@ -112,11 +112,11 @@ viewTags conn = do
   articles <- traverse getArticleAndId files
   let articles' = reverse $ mapMaybe id articles
   let tags = sortBy (compare `on` fst) (tagsFromArticles (map snd articles'))
-  let html = Layout.view Tags (Tags.view tags)
+  let html = Layout.view "Tags" Tags (Tags.view tags)
   sendHtml 200 html conn
 
 export
 viewAbout : Conn -> IO Conn
 viewAbout conn = do
-  let html = Layout.view About About.view
+  let html = Layout.view "About" About About.view
   sendHtml 200 html conn
