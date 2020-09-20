@@ -35,7 +35,7 @@ viewArticle id article =
   let
     Just introHtml = markdownToHtml article.intro
       | Nothing => text "Unable to parse text as Markdown"
-    readMore =
+    footer =
       if article.body /= Nothing
         then
           [ p
@@ -61,7 +61,7 @@ viewArticle id article =
               []
               [ text article.title ]
           , unsafeRaw introHtml
-          ] ++ readMore
+          ] ++ footer
         )
       )
 
