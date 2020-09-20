@@ -171,7 +171,7 @@ view selectedPage content =
             []
         , link
             [ rel "shortcut icon"
-            , href "favicon.png"
+            , href "/favicon.png"
             , type "image/x-icon"
             ]
             []
