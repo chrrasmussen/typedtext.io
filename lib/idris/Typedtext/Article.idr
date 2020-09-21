@@ -4,7 +4,7 @@ import Control.Monad.Identity
 import Data.List
 import Data.List1
 import Data.Strings
-import Data.String.Parser
+import Erlang.Data.String.Parser
 
 %hide List1.(::)
 
