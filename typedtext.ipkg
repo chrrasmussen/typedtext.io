@@ -2,7 +2,8 @@ package typedtext
 
 modules =
   Typedtext.Router,
-  Typedtext.Articles.A001_HelloWorld
+  Typedtext.Articles.A001_HelloWorld,
+  Typedtext.Articles.A002_BuildingBlocks
 
 sourcedir = "lib/idris"
 builddir = "_build/idris"
