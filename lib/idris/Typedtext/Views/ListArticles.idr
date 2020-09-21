@@ -50,14 +50,15 @@ viewArticle id article =
   in
     ContentBox.view
       (div
-        []
+        [ className "article"
+        ]
         (
           [ span
               [ style "float" "right"
               , style "color" "#888888"
               ]
               [ text article.publishDate ]
-          , h2
+          , h1
               []
               [ text article.title ]
           , unsafeRaw introHtml

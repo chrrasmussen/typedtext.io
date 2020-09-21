@@ -20,7 +20,8 @@ view article =
   in
     ContentBox.view
       (div
-        []
+        [ className "article"
+        ]
         (
           [ span
               [ style "float" "right"

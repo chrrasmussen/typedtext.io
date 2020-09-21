@@ -2,8 +2,16 @@ h1, h2, h3, h4, h5, h6 {
   color: #4A4A4A;
 }
 
+h1 {
+  font-size: 24px;
+}
+
 h2 {
-  font-size: 20px;
+  font-size: 18px;
+}
+
+.article h2 {
+  margin-top: 1.5em;
 }
 
 hr {
