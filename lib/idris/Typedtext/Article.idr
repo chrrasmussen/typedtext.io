@@ -6,8 +6,6 @@ import Data.List1
 import Data.Strings
 import Erlang.Data.String.Parser
 
-%hide List1.(::)
-
 
 public export
 record Article where
@@ -68,7 +66,7 @@ title = do
 
 splitTags : String -> List String
 splitTags str =
-  filter (/= "") $ List1.toList $ map (trim . pack) $ splitOn ',' (unpack str)
+  filter (/= "") $ forget $ map (trim . pack) $ splitOn ',' (unpack str)
 
 article : Parser Article
 article = do
