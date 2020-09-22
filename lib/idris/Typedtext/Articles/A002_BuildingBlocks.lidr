@@ -102,8 +102,8 @@ Besides writing more blog posts, I will consider adding the following functional
 
 Further down the road, I am hopeful that Idris 2 will add [type provider](http://docs.idris-lang.org/en/latest/guides/type-providers-ffi.html) functionality, like Idris 1 had. A bit simplified: A type provider is able to run `IO` operations at compile-time. Some ideas of what a type provider can be used for:
 
-- Verify that the metadata in the blog posts are valid
-- Verify that referenced images exist on disk
+- Validate that the metadata in the blog posts are valid
+- Validate that referenced images exist on disk
 - Run a spell-checker when saving changes to a blog post
 - Pre-render the static HTML when saving changes to a blog post
 
