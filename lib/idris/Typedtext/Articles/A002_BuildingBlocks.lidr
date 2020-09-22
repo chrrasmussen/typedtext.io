@@ -18,7 +18,7 @@ By using the Erlang code generator I am able to access functionality from the [E
 
 When building this website I had a few goals in mind:
 
-- Write blog posts as Literate Idris
+- Write blog posts as [Literate Idris](https://idris2.readthedocs.io/en/latest/reference/literate.html)
   - I want all the Idris 2 code snippets to be type-checked (hence the name of this blog)
 - Support Markdown
 - Support syntax highlighting of code snippets
