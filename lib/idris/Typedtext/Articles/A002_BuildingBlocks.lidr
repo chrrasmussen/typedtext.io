@@ -55,7 +55,15 @@ The router forwards requests to the approproriate [handler](https://github.com/c
 
 To generate HTML from Markdown, I opted for an Elixir library called [Earmark](https://github.com/pragdave/earmark). This library was easy to integrate, needing just a call to `Earmark.as_html/1`. Or at least, that's what I thought. I soon realized that Markdown interprets lines starting with the `>` character as `<blockquote>` tags, while Literate Idris see them as Idris 2 code ([Bird style](https://idris2.readthedocs.io/en/latest/reference/literate.html#bird-style-literate-files)).
 
-Luckily, I discovered that Earmark supports generating an AST (Abstract Syntax Tree) from the Markdown. Using this AST, I was able to transform the generated `<blockquote>` tags into `<pre>`/`<code>` tags. Earmark could then generate HTML from the transformed AST. This worked well, and the [transformation](https://github.com/chrrasmussen/typedtext.io/blob/e8c10f85626629265118aa4b29dde957baa81844/lib/idris/Elixir/Markdown.idr) was all done in Idris 2.
+Luckily, I discovered that Earmark supports generating an AST (Abstract Syntax Tree) from the Markdown. Using this AST, I was able to transform the generated `<blockquote>` tags into `<pre>`/`<code>` tags. Earmark could then generate HTML from the transformed AST. The [transformation](https://github.com/chrrasmussen/typedtext.io/blob/e8c10f85626629265118aa4b29dde957baa81844/lib/idris/Elixir/Markdown.idr) was all done in Idris 2. Below you can see how the `markdownToHtml` function interoperates with Erlang (Calling the Elixir library):
+
+```idris
+markdownToHtml : String -> Maybe String
+markdownToHtml contents = do
+  let astResult = erlUnsafeCall ErlTerm "Elixir.Earmark" "as_ast" [contents]
+  ast <- erlDecodeMay ((\(MkTuple3 _ ast _) => ast) <$> tuple3 (exact (MkAtom "ok")) any any) astResult
+  Just $ erlUnsafeCall String "Elixir.Earmark.Transform" "transform" [transformLiterateIdris ast]
+```
 
 
 ## Syntax highlighting
