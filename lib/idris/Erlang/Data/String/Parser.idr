@@ -6,6 +6,7 @@ import Control.Monad.Trans
 
 import Data.Fin
 import Data.List
+import Erlang
 
 %default total
 
@@ -170,12 +171,21 @@ satisfy f = P $ \s => pure $ do
     then OK char rest
     else Fail SatisfyFailed
 
+-- TODO: This is the only function that is specific to Erlang. It could
+-- be defined as a primitive.
+splitAt : Integer -> String -> (String, String)
+splitAt pos str =
+  let h = erlUnsafeCall String "string" "slice" [str, the Integer 0, pos]
+      t = erlUnsafeCall String "string" "slice" [str, pos]
+  in (h, t)
+
 ||| Succeeds if the string `str` follows.
 export
 string : Applicative m => String -> ParseT m ()
-string str = P $ \s => pure $
-  if substr 0 (length str) s == str
-    then OK () (substr (length str) (length s) s)
+string str = P $ \s => pure
+  let (h, t) = splitAt (natToInteger (length str)) s
+  in if h == str
+    then OK () t
     else Fail (ExpectedString str)
 
 ||| Succeeds if the end of the string is reached.
