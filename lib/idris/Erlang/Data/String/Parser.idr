@@ -188,6 +188,11 @@ string str = P $ \s => pure
     then OK () t
     else Fail (ExpectedString str)
 
+||| Succeeds with the remaining string
+export
+remaining : Applicative m => ParseT m String
+remaining = P $ \s => pure $ OK s ""
+
 ||| Succeeds if the end of the string is reached.
 export
 eos : Applicative m => ParseT m ()

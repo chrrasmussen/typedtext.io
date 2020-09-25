@@ -76,7 +76,7 @@ article = do
   title' <- title
   spaces
   intro' <- map pack $ manyTill anyChar (foldMarker <|> eos)
-  body' <- takeWhile (const True)
+  body' <- remaining
   let Just [authorName', authorEmail', publishDate', tags'] = traverse (\f => lookup f fs) ["AUTHOR_NAME", "AUTHOR_EMAIL", "PUBLISH_DATE", "TAGS"]
     | _ => fail (UserError "Could not find all fields")
   pure $ MkArticle authorName' authorEmail' publishDate' (splitTags tags') title' intro' (if body' /= "" then Just body' else Nothing)
