@@ -4,40 +4,60 @@ module Erlang.Data.String.Parser
 import Control.Monad.Identity
 import Control.Monad.Trans
 
-import Data.Strings
 import Data.Fin
 import Data.List
-import Erlang.Data.Array
 
 %default total
 
-||| The input state, pos is position in the string and maxPos is the length of the input string.
+
 public export
-record State where
-    constructor S
-    input : ErlArray Char
-    pos : Int
-    maxPos : Int
+data ParseError
+  = NoAlternativeLeft
+  | NoCharactersLeft
+  | SatisfyFailed
+  | ExpectedString String
+  | ExpectedToken String
+  | ExpectedWhitespace
+  | ExpectedDigit
+  | ExpectedEndOfString
+  | UserError String
 
-Show State where
-    show s = "(" ++ show (mapMaybe id (toList s.input)) ++ ", " ++ show s.pos ++ ", " ++ show s.maxPos ++ ")"
+export
+Show ParseError where
+  show NoAlternativeLeft = "No alternative left"
+  show NoCharactersLeft = "No characters left"
+  show SatisfyFailed = "Satisfy failed"
+  show (ExpectedString x) = "Expected string: " ++ x
+  show (ExpectedToken x) = "Expected token: " ++ x
+  show ExpectedWhitespace = "Expected whitespace"
+  show ExpectedDigit = "Expected digit"
+  show ExpectedEndOfString = "Expected end of string"
+  show (UserError x) = "User error: " ++ x
 
-||| Result of applying a parser
 public export
-data Result a = Fail Int String | OK a State
+data Result a = Fail ParseError | OK a String
 
+export
 Functor Result where
-  map f (Fail i err) = Fail i err
-  map f (OK r s)     = OK (f r) s
+  map f (Fail err) = Fail err
+  map f (OK val s) = OK (f val) s
 
-public export
-record ParseT (m : Type -> Type) (a : Type) where
-    constructor P
-    runParser : State -> m (Result a)
+export
+record ParseT m a where
+  constructor P
+  runParser : String -> m (Result a)
+
+export
+parseT : ParseT m a -> String -> m (Result a)
+parseT (P runParser) inp = runParser inp
 
 public export
 Parser : Type -> Type
 Parser = ParseT Identity
+
+export
+parse : Parser a -> String -> Result a
+parse (P runParser) inp = runIdentity (runParser inp)
 
 public export
 Functor m => Functor (ParseT m) where
@@ -48,54 +68,56 @@ Monad m => Applicative (ParseT m) where
     pure x = P $ \s => pure $ OK x s
     f <*> x = P $ \s => case !(f.runParser s) of
                             OK f' s' => map (map f') (x.runParser s')
-                            Fail i err => pure $ Fail i err
+                            Fail err => pure $ Fail err
 
 public export
 Monad m => Alternative (ParseT m) where
-    empty = P $ \s => pure $ Fail s.pos "no alternative left"
+    empty = P $ \s => pure $ Fail NoAlternativeLeft
     a <|> b = P $ \s => case !(a.runParser s) of
                             OK r s' => pure $ OK r s'
-                            Fail _ _ => b.runParser s
+                            Fail _ => b.runParser s
 
 public export
 Monad m => Monad (ParseT m) where
     m >>= k = P $ \s => case !(m.runParser s) of
                              OK a s' => (k a).runParser s'
-                             Fail i err => pure $ Fail i err
+                             Fail err => pure $ Fail err
 
 public export
 MonadTrans ParseT where
     lift x = P $ \s => map (flip OK s) x
 
-||| Run a parser in a monad
-||| Returns a tuple of the result and final position on success.
-||| Returns an error message on failure.
-export
-parseT : Functor m => ParseT m a -> String -> m (Either String (a, Int))
-parseT p str =
-  let charArray = fromList (map Just (unpack str))
-  in map (\case
-                       OK r s => Right (r, s.pos)
-                       Fail i err => Left $ fastAppend ["Parse failed at position ", show i, ": ", err])
-                   (p.runParser (S charArray 0 (strLength str)))
+-- ||| Run a parser in a monad
+-- ||| Returns a tuple of the result and final position on success.
+-- ||| Returns an error message on failure.
+-- export
+-- parseT : Functor m => ParseT m a -> String -> m (Either String (a, Int))
+-- parseT p str =
+--   let charArray = fromList (map Just (unpack str))
+--   in map (\case
+--            OK r s => Right (r, s.pos)
+--            Fail err => Left $ fastAppend ["Parse failed: ", show err])
+--        (p.runParser (S charArray 0 (strLength str)))
 
-||| Run a parser in a pure function
-||| Returns a tuple of the result and final position on success.
-||| Returns an error message on failure.
-export
-parse : Parser a -> String -> Either String (a, Int)
-parse p str = runIdentity $ parseT p str
+-- ||| Run a parser in a pure function
+-- ||| Returns a tuple of the result and final position on success.
+-- ||| Returns an error message on failure.
+-- export
+-- parse : Parser a -> String -> Either String (a, Int)
+-- parse p str = runIdentity $ parseT p str
+
+infixl 0 <?>
 
 ||| Combinator that replaces the error message on failure.
 ||| This allows combinators to output relevant errors
 export
-(<?>) : Functor m => ParseT m a -> String -> ParseT m a
-(<?>) p msg = P $ \s => map (\case
+(<?>) : Functor m => ParseT m a -> ParseError -> ParseT m a
+(<?>) p err = P $ \s => map (\case
                                 OK r s' => OK r s'
-                                Fail i _ => Fail i msg)
+                                Fail _ => Fail err)
                             (p.runParser s)
 
-infixl 0 <?>
+
 
 ||| Discards the result of a parser
 export
@@ -107,7 +129,7 @@ export
 optionMap : Functor m => b -> (a -> b) -> ParseT m a -> ParseT m b
 optionMap def f p = P $ \s => map (\case
                                      OK r s'  => OK (f r) s'
-                                     Fail _ _ => OK def s)
+                                     Fail _ => OK def s)
                                   (p.runParser s)
 
 ||| Runs the result of the parser `p` or returns `def` if it fails.
@@ -127,37 +149,41 @@ optional = optionMap Nothing Just
 
 ||| Fail with some error message
 export
-fail : Applicative m => String -> ParseT m a
-fail x = P $ \s => pure $ Fail s.pos x
+fail : Applicative m => ParseError -> ParseT m a
+fail err = P $ \s => pure $ Fail err
+
+satisfyResult : String -> (Char -> Bool) -> Result Char
+satisfyResult s f =
+  let Just (char, rest) = strUncons s
+        | Nothing => Fail NoCharactersLeft
+  in if f char
+    then OK char rest
+    else Fail SatisfyFailed
 
 ||| Succeeds if the next char satisfies the predicate `f`
 export
 satisfy : Applicative m => (Char -> Bool) -> ParseT m Char
-satisfy f = P $ \s => pure $ if s.pos < s.maxPos
-                                  then let Just ch = assert_total $ get s.pos s.input
-                                             | Nothing => Fail s.pos "satisfy"
-                                       in if f ch
-                                           then OK ch (S s.input (s.pos + 1) s.maxPos)
-                                           else Fail s.pos "satisfy"
-                                  else Fail s.pos "satisfy"
+satisfy f = P $ \s => pure $ do
+  let Just (char, rest) = strUncons s
+        | Nothing => Fail NoCharactersLeft
+  if f char
+    then OK char rest
+    else Fail SatisfyFailed
 
 ||| Succeeds if the string `str` follows.
 export
 string : Applicative m => String -> ParseT m ()
-string str = P $ \s => pure $ let len = strLength str in
-                              if s.pos+len <= s.maxPos
-                                  then let head = pack $ mapMaybe id (getRange s.pos len s.input) in
-                                       if head == str
-                                         then OK () (S s.input (s.pos + len) s.maxPos)
-                                         else Fail s.pos ("string " ++ show str)
-                                  else Fail s.pos ("string " ++ show str)
+string str = P $ \s => pure $
+  if substr 0 (length str) s == str
+    then OK () (substr (length str) (length s) s)
+    else Fail (ExpectedString str)
 
 ||| Succeeds if the end of the string is reached.
 export
 eos : Applicative m => ParseT m ()
-eos = P $ \s => pure $ if s.pos == s.maxPos
+eos = P $ \s => pure $ if s == ""
                            then OK () s
-                           else Fail s.pos "expected the end of the string"
+                           else Fail ExpectedEndOfString
 
 ||| Succeeds if the next char is `c`
 export
@@ -218,7 +244,7 @@ takeWhile f = pack <$> many (satisfy f)
 export
 covering
 spaces : Monad m => ParseT m ()
-spaces = skip (many space) <?> "white space"
+spaces = skip (many space) <?> ExpectedWhitespace
 
 ||| Discards brackets around a matching parser
 export
@@ -235,14 +261,14 @@ lexeme p = p <* spaces
 export
 covering
 token : Monad m => String -> ParseT m ()
-token s = lexeme (skip $ string s) <?> "token " ++ show s
+token s = lexeme (skip $ string s) <?> ExpectedToken s
 
 ||| Matches a single digit
 export
 digit : Monad m => ParseT m (Fin 10)
 digit = do x <- satisfy isDigit
            case lookup x digits of
-                Nothing => fail "not a digit"
+                Nothing => fail ExpectedDigit
                 Just y => pure y
   where
     digits : List (Char, Fin 10)

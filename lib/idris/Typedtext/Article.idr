@@ -78,10 +78,12 @@ article = do
   intro' <- map pack $ manyTill anyChar (foldMarker <|> eos)
   body' <- takeWhile (const True)
   let Just [authorName', authorEmail', publishDate', tags'] = traverse (\f => lookup f fs) ["AUTHOR_NAME", "AUTHOR_EMAIL", "PUBLISH_DATE", "TAGS"]
-    | _ => fail "Could not find all fields"
+    | _ => fail (UserError "Could not find all fields")
   pure $ MkArticle authorName' authorEmail' publishDate' (splitTags tags') title' intro' (if body' /= "" then Just body' else Nothing)
 
 export
 parseArticle : String -> Either String Article
 parseArticle body =
-  map fst (parse article body)
+  case parse article body of
+    OK article _ => Right article
+    Fail err => Left (show err)
