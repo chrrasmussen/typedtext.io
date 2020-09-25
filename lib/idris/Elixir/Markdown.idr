@@ -8,6 +8,28 @@ import Erlang
 %default total
 
 
+-- This module converts Markdown to HTML.
+--
+-- Additionally, it translates Literate Idris code into normal code blocks.
+-- Literate Idris is using `>` markers to indicate code, while Markdown uses
+-- these markers to indicate a blockquote.
+--
+-- ```idris
+-- > foo : Int
+-- > foo = 42
+-- ```
+--
+-- Earmark turns this text into the following AST:
+-- ```
+-- [{"blockquote", [], [{"p", [], ["foo : Int\nfoo = 42"], %{}}], %{}}]
+-- ```
+--
+-- After the transformation, the AST should look like this:
+-- ```
+-- [{"pre", [], [{"code", [{"class", "idris"}], ["foo : Int\nfoo = 42"], %{}}], %{}}]
+-- ```
+
+
 transformAst : (String -> Maybe a) -> (String -> List (ErlTuple2 String String) -> List ErlTerm -> ErlAnyMap -> Maybe a) -> ErlTerm -> Maybe a
 transformAst fromText fromNode ast =
   join $ erlDecodeMay
