@@ -71,9 +71,10 @@ viewPosts conn = do
       let html = text "Failed to read directory"
       sendHtml 500 html conn
   articles <- traverse getArticleAndId files
-  let articles' = reverse $ filter (mustIncludeTag tag . snd) $ mapMaybe id articles
-  let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd articles'))
-  let html = Layout.view "Posts" Posts (ListArticles.view articles' topTags)
+  let allArticles = mapMaybe id articles
+  let filteredArticles = reverse $ filter (mustIncludeTag tag . snd) allArticles
+  let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd allArticles))
+  let html = Layout.view "Posts" Posts (ListArticles.view filteredArticles topTags)
   sendHtml 200 html conn
   where
     mustIncludeTag : Maybe String -> Article -> Bool
