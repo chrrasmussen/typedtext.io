@@ -9,7 +9,7 @@ import Typedtext.Views.Helpers.ContentBox
 
 viewBadge : Integer -> Html
 viewBadge count =
-  let size : Integer = 20
+  let size : Integer = 24
   in span
     [ style "display" "inline-block"
     , style "width" (cast size ++ "px")
@@ -20,8 +20,6 @@ viewBadge count =
     , style "color" "white"
     , style "font-size" "13px"
     , style "text-align" "center"
-    , style "font-family" "monospace"
-    , style "font-weight" "700"
     ]
     [ text (cast count)
     ]

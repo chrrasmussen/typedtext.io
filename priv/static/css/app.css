@@ -28,10 +28,6 @@ h2 {
     margin-top: 2em;
 }
 
-p {
-    line-height: 1.5;
-}
-
 hr {
     background-color: #ddd;
     margin: 24px 0;
@@ -46,7 +42,7 @@ code.inline {
 }
 
 code.hljs { /* Override styles in highlight-github.css */
-    background-color: #F7F4F4;
+    background-color: #F4F4F4;
     border-radius: 4px;
 }
 
@@ -85,24 +81,23 @@ a:hover {
     margin-top: 24px;
 }
 
-.logo-image,
-.top-tags {
-    display: none;
-}
-
-@media (min-width: 768px) {
+@media (max-width: 768px) {
     .logo-image {
-        display: inline-block;
+        display: none;
+    }
+
+    .logo-text {
+        margin-left: 20px;
     }
 
     .top-tags {
-        display: block;
+        display: none;
     }
 }
 
 
 @media (max-width: 480px) {
     .logo-text {
-        max-width: 100px;
+        max-height: 50px;
     }
 }

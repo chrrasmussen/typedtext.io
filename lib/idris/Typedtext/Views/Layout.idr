@@ -8,7 +8,7 @@ import Html
 -- STYLES
 
 menuBarHeight : Integer
-menuBarHeight = 80
+menuBarHeight = 70
 
 contentWidth : Integer
 contentWidth = 800
@@ -64,14 +64,15 @@ header selectedPage =
     [ className "header"
     , style "background-color" headerBackgroundColor
     , style "height" (cast menuBarHeight ++ "px")
+    , style "box-shadow" "rgba(0, 0, 0, 0.05) 0px 8px 16px 0px"
     ]
     [ div
         [ style "max-width" (cast contentWidth ++ "px")
         , style "margin" "0 auto"
+        , style "padding" "0 10px"
         , style "display" "flex"
         , style "justify-content" "space-between"
         , style "align-items" "center"
-        , style "padding" "0 8px"
         ]
         [ div
             []
@@ -83,17 +84,14 @@ header selectedPage =
                 , style "display" "block"
                 ]
                 [ img
-                    [ src "/images/typedtext-image.svg"
+                    [ src "/images/typedtext-logo.svg"
                     , alt "Logo for typedtext.io"
-                    , style "max-height" "40px"
-                    , style "margin-right" "16px"
                     , className "logo-image"
                     ]
                     []
                     , img
-                         [ src "/images/typedtext-text.svg"
-                         , alt "Logo for typedtext.io"
-                         , style "max-height" "40px"
+                         [ src "/images/typedtext-title.svg"
+                         , alt "Title for typedtext.io"
                          , className "logo-text"
                          ]
                          []
@@ -231,7 +229,6 @@ view titleStr selectedPage content =
         [ style "margin" "0"
         , style "font-family" "-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
         , style "font-size" "16px"
-        , style "line-height" "1.4em"
         ]
         [ header selectedPage
         , div
