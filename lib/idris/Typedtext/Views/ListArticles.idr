@@ -42,7 +42,7 @@ viewArticle id article =
               []
               [ a
                   [ href ("/posts/view?id=" ++ show id) ]
-                  [ text "Read more" ]
+                  [ text "Read more →" ]
               ]
           ]
         else
@@ -55,7 +55,7 @@ viewArticle id article =
         (
           [ span
               [ style "float" "right"
-              , style "color" "#888888"
+              , style "color" "#666677"
               ]
               [ text article.publishDate ]
           , h1
@@ -69,7 +69,7 @@ viewArticle id article =
 wrapInMarginTopContainer : Html -> Html
 wrapInMarginTopContainer content =
   div
-    [ className "margintop15-skipfirst" ]
+    [ className "margintop24-skipfirst" ]
     [ content ]
 
 export
@@ -83,8 +83,9 @@ view articles topTags =
         ]
         (map (wrapInMarginTopContainer . uncurry viewArticle) articles)
     , div
-        [ style "width" "250px"
-        , style "margin-left" "15px"
+        [ style "width" "200px"
+        , style "margin-left" "24px"
+        , className "top-tags"
         ]
         [ viewTags topTags
         ]

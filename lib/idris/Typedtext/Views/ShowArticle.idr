@@ -25,7 +25,7 @@ view article =
         (
           [ span
               [ style "float" "right"
-              , style "color" "#888888"
+              , style "color" "#666677"
               ]
               [ text article.publishDate ]
           , h1 [] [text article.title]
