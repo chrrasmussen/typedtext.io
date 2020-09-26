@@ -38,13 +38,14 @@ Eq SelectedPage where
   About == About = True
   _ == _ = False
 
-menuButton : (isActive : Bool) -> (url : String) -> (title : String) -> Html
-menuButton isActive url title =
+menuButton : (className : String) -> (isActive : Bool) -> (url : String) -> (title : String) -> Html
+menuButton className' isActive url title =
   let
     backgroundColor = if isActive then menuBarActiveColor else headerBackgroundColor
     textColor = if isActive then headerBackgroundColor else menuBarActiveColor
   in div
-    [ style "display" "inline-block"
+    [ className className'
+    , style "display" "inline-block"
     ]
     [ a
         [ href url
@@ -98,10 +99,11 @@ header selectedPage =
                 ]
             ]
         , div
-            [ style "background-color" "transparent" ]
-            [ menuButton (selectedPage == Posts) "/posts" "Posts"
-            , menuButton (selectedPage == Tags) "/tags" "Tags"
-            , menuButton (selectedPage == About) "/about" "About"
+            [ style "flex-shrink" "0"
+            ]
+            [ menuButton "menu-posts" (selectedPage == Posts) "/posts" "Posts"
+            , menuButton "menu-tags" (selectedPage == Tags) "/tags" "Tags"
+            , menuButton "menu-about" (selectedPage == About) "/about" "About"
             ]
         ]
     ]

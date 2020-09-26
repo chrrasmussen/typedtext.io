@@ -102,8 +102,9 @@ a:hover {
     }
 }
 
-@media (max-width: 399px) {
-    .logo-text {
-        display: none;
+/* iPhone 6 has a logical resolution of 375x667 */
+@media (max-width: 374px) {
+    .menu-tags {
+        display: none !important;
     }
 }
