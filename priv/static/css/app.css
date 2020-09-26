@@ -1,69 +1,108 @@
+html {
+    box-sizing: border-box;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 h1, h2, h3, h4, h5, h6 {
-  color: #4A4A4A;
+    margin-top: 0.5em;
+    margin-bottom: 0.1em;
+    color: #4A4A4A;
+    font-weight: 400;
+    line-height: 1;
 }
 
 h1 {
-  font-size: 24px;
+    font-size: 30px;
 }
 
 h2 {
-  font-size: 18px;
+    font-size: 22px;
 }
 
-.article h2 {
-  margin-top: 1.5em;
+* + h1:not(:first-of-type), * + h2 {
+    margin-top: 2em;
+}
+
+p {
+    line-height: 1.5;
 }
 
 hr {
-  background-color: #AAA;
-  height: 1px;
-  border: none;
+    background-color: #ddd;
+    margin: 24px 0;
+    height: 1px;
+    border: none;
 }
 
 code.inline {
-  padding: 3px 6px;
-  background-color: #F4F4F4;
-  border-radius: 5px;
+    padding: 3px 6px;
+    background-color: #F7F4F4;
+    border-radius: 5px;
 }
 
 code.hljs { /* Override styles in highlight-github.css */
-  background-color: #F4F4F4;
-  border-radius: 8px;
+    background-color: #F7F4F4;
+    border-radius: 4px;
 }
 
 a {
-  color: #3841C6;
-  text-decoration: underline;
+    color: #2a7adc;
+    text-decoration: none;
 }
 
 a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .header a {
-  text-decoration: none;
-}
-
-.footer {
-  line-height: 1.4em
+    text-decoration: none;
 }
 
 .footer a {
-  color: #888888;
+    color: #666677;
+    text-decoration: underline;
 }
 
 .article-footer {
-  color: #888888;
+    color: #666677;
 }
 
 .article-footer a {
-  color: #888888;
+    color: #666677;
+    text-decoration: underline;
 }
 
 .tags ul {
-  padding-left: 1em;
+    padding-left: 1em;
 }
 
-.margintop15-skipfirst + .margintop15-skipfirst {
-  margin-top: 15px;
+.margintop24-skipfirst + .margintop24-skipfirst {
+    margin-top: 24px;
+}
+
+.logo-image,
+.top-tags {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .logo-image {
+        display: inline-block;
+    }
+
+    .top-tags {
+        display: block;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .logo-text {
+        max-width: 100px;
+    }
 }

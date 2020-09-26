@@ -8,7 +8,7 @@ import Html
 -- STYLES
 
 menuBarHeight : Integer
-menuBarHeight = 60
+menuBarHeight = 80
 
 contentWidth : Integer
 contentWidth = 800
@@ -20,7 +20,7 @@ menuBarActiveColor : String
 menuBarActiveColor = "white"
 
 footerTextColor : String
-footerTextColor = "#888888"
+footerTextColor = "#666677"
 
 
 -- VIEW
@@ -52,7 +52,7 @@ menuButton isActive url title =
         , style "line-height" (cast menuBarHeight ++ "px")
         , style "background-color" backgroundColor
         , style "color" textColor
-        , style "padding" "0 15px"
+        , style "padding" "0 16px"
         , style "font-size" "18px"
         ]
         [ text title ]
@@ -64,13 +64,14 @@ header selectedPage =
     [ className "header"
     , style "background-color" headerBackgroundColor
     , style "height" (cast menuBarHeight ++ "px")
-    , style "box-shadow" "rgba(0, 0, 0, 0.1) 0px 8px 16px 0px"
     ]
     [ div
-        [ style "width" (cast contentWidth ++ "px")
+        [ style "max-width" (cast contentWidth ++ "px")
         , style "margin" "0 auto"
         , style "display" "flex"
         , style "justify-content" "space-between"
+        , style "align-items" "center"
+        , style "padding" "0 8px"
         ]
         [ div
             []
@@ -79,18 +80,27 @@ header selectedPage =
               [ text "typedtext.io" ]
             , a
                 [ href "/"
+                , style "display" "block"
                 ]
                 [ img
-                    [ src "/images/logo.png"
+                    [ src "/images/typedtext-image.svg"
                     , alt "Logo for typedtext.io"
-                    , style "width" "190px"
-                    , style "height" "60px"
+                    , style "max-height" "40px"
+                    , style "margin-right" "16px"
+                    , className "logo-image"
                     ]
                     []
+                    , img
+                         [ src "/images/typedtext-text.svg"
+                         , alt "Logo for typedtext.io"
+                         , style "max-height" "40px"
+                         , className "logo-text"
+                         ]
+                         []
                 ]
             ]
         , div
-            [ style "background-color" "green" ]
+            [ style "background-color" "transparent" ]
             [ menuButton (selectedPage == Posts) "/posts" "Posts"
             , menuButton (selectedPage == Tags) "/tags" "Tags"
             , menuButton (selectedPage == About) "/about" "About"
@@ -137,11 +147,11 @@ footer =
         ]
   in div
       [ className "footer"
-      , style "margin-top" "30px"
-      , style "margin-bottom" "15px"
+      , style "margin-top" "32px"
+      , style "margin-bottom" "16px"
       , style "text-align" "center"
       , style "color" footerTextColor
-      , style "font-size" "12px"
+      , style "font-size" "13px"
       ]
       [ line1
       , line2
@@ -152,13 +162,17 @@ footer =
 export
 view : (title : String) -> SelectedPage -> Html -> Html
 view titleStr selectedPage content =
-  let pagePadding = 15
+  let pagePadding = 8
   in html
-    [ style "background-color" "#F2F0ED"
+    [ style "background-color" "#F2F2F2"
     ]
     [ head
         []
         [ title [] [ text (titleStr ++ " — typedtext.io") ]
+        , meta
+            [ attr "lang" "en"
+            ]
+            []
         , meta
             [ name "author"
             , attr "content" "Christian Rasmussen"
@@ -167,6 +181,11 @@ view titleStr selectedPage content =
         , meta
             [ name "description"
             , attr "content" "Technology blog by Christian Rasmussen"
+            ]
+            []
+        , meta
+            [ name "viewport"
+            , attr "content" "width=device-width, initial-scale=1.0"
             ]
             []
         , link
@@ -216,8 +235,8 @@ view titleStr selectedPage content =
         ]
         [ header selectedPage
         , div
-            [ style "width" (cast (contentWidth + pagePadding * 2) ++ "px")
-            , style "margin" "30px auto 0 auto"
+            [ style "max-width" (cast (contentWidth + pagePadding * 2) ++ "px")
+            , style "margin" "32px auto 0 auto"
             ]
             [ div
                 [ style "padding" ("0 " ++ cast pagePadding ++ "px")

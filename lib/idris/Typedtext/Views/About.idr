@@ -8,7 +8,7 @@ import Typedtext.Views.Helpers.ContentBox
 
 content : String
 content = "
-## Blog content
+# Blog content
 
 On this blog I will mainly write about:
 
@@ -16,7 +16,7 @@ On this blog I will mainly write about:
 - Things I learn/experiments in Idris 2
 
 
-## About me
+# About me
 
 I am a developer that like to build web {sites,apps,services} and iOS apps. In 2014 I started to get into functional programming, learning languages like Erlang/Elixir, Elm, Haskell and Idris. These days I focus my learning on Idris 2, and trying to make Idris 2 into a viable option for web development.
 
