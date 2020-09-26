@@ -1,7 +1,7 @@
 # typedtext.io
 
 To start your Phoenix server:
-
+  * Install Elixir: https://elixir-lang.org/install.html
   * Install dependencies with `mix deps.get`
   * Start Phoenix endpoint with `mix phx.server`
 
