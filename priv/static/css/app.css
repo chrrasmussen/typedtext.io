@@ -95,9 +95,15 @@ a:hover {
     }
 }
 
-
 @media (max-width: 480px) {
     .logo-text {
-        max-height: 50px;
+        max-width: 120px;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 399px) {
+    .logo-text {
+        display: none;
     }
 }
