@@ -111,8 +111,8 @@ viewTags conn = do
       let html = text "Failed to read directory"
       sendHtml 500 html conn
   articles <- traverse getArticleAndId files
-  let articles' = reverse $ mapMaybe id articles
-  let tags = sortBy (compare `on` fst) (tagsFromArticles (map snd articles'))
+  let allArticles = mapMaybe id articles
+  let tags = sortBy (compare `on` fst) (tagsFromArticles (map snd allArticles))
   let html = Layout.view "Tags" Tags (Tags.view tags)
   sendHtml 200 html conn
 
