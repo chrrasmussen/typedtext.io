@@ -23,8 +23,7 @@ viewTags tags =
               []
               [ text "Top tags" ]
           , ul
-              [ style "line-height" "24px"
-              ]
+              []
               (map viewTag tags)
           ]
         )
