@@ -48,6 +48,8 @@ record ParseT m a where
   constructor P
   runParser : String -> m (Result a)
 
+||| Run a parser in a monad
+||| Returns an error message on failure.
 export
 parseT : ParseT m a -> String -> m (Result a)
 parseT (P runParser) inp = runParser inp
@@ -56,6 +58,8 @@ public export
 Parser : Type -> Type
 Parser = ParseT Identity
 
+||| Run a parser in a pure function
+||| Returns an error message on failure.
 export
 parse : Parser a -> String -> Result a
 parse (P runParser) inp = runIdentity (runParser inp)
@@ -87,25 +91,6 @@ Monad m => Monad (ParseT m) where
 public export
 MonadTrans ParseT where
     lift x = P $ \s => map (flip OK s) x
-
--- ||| Run a parser in a monad
--- ||| Returns a tuple of the result and final position on success.
--- ||| Returns an error message on failure.
--- export
--- parseT : Functor m => ParseT m a -> String -> m (Either String (a, Int))
--- parseT p str =
---   let charArray = fromList (map Just (unpack str))
---   in map (\case
---            OK r s => Right (r, s.pos)
---            Fail err => Left $ fastAppend ["Parse failed: ", show err])
---        (p.runParser (S charArray 0 (strLength str)))
-
--- ||| Run a parser in a pure function
--- ||| Returns a tuple of the result and final position on success.
--- ||| Returns an error message on failure.
--- export
--- parse : Parser a -> String -> Either String (a, Int)
--- parse p str = runIdentity $ parseT p str
 
 infixl 0 <?>
 
