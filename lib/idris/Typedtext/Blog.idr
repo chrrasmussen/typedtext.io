@@ -72,7 +72,7 @@ viewPosts conn = do
       sendHtml 500 html conn
   articles <- traverse getArticleAndId files
   let allArticles = mapMaybe id articles
-  let filteredArticles = reverse $ filter (mustIncludeTag tag . snd) allArticles
+  let filteredArticles = sortBy (flip compare `on` fst) $ filter (mustIncludeTag tag . snd) allArticles
   let topTags = take 5 $ sortBy (flip compare `on` snd) (tagsFromArticles (map snd allArticles))
   let html = Layout.view "Posts" Posts (ListArticles.view filteredArticles topTags)
   sendHtml 200 html conn
