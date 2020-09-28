@@ -3,7 +3,8 @@ package typedtext
 modules =
   Typedtext.Router,
   Typedtext.Articles.A001_HelloWorld,
-  Typedtext.Articles.A002_BuildingBlocks
+  Typedtext.Articles.A002_BuildingBlocks,
+  Typedtext.Articles.A003_InitialReleaseIdris2Erlang
 
 sourcedir = "lib/idris"
 builddir = "_build/idris"
